@@ -9,25 +9,25 @@ const HostelDashboardPage = () => {
     // navigate
     const navigate = useNavigate()
 
+    // get current admin ( hostel or parent or student)
+    const admin = localStorage.getItem("admin")
+
     // use effect for login or not checking
     useEffect(() => {
         async function auth() {
-            const admin = localStorage.getItem("admin")
             if (admin === "hostel") {
                 const token = localStorage.getItem("hosteltoken")
                 if (token) {
                     const auth = await HostelAuthApi(token)
-                    if (!auth || !auth.auth) {
-                        navigate("/landing")
+                    if (!auth || auth.status === "failed" || !auth.auth) {
+                        navigate("/hostel/login")
                     }
-                } else {
-                    navigate("/landing")
                 }
             } else {
                 alert("You dont have access this page")
                 localStorage.removeItem('admin');
-                navigate('/landing')
-            }
+                navigate('/')
+            } 
         }
         auth()
     }, []);
@@ -39,7 +39,7 @@ const HostelDashboardPage = () => {
             <SidebarComponent now={'dashboard'} />
             <div className="w-auto min-h-screen px-3 pt-16 md:ml-60 lg:ml-80 bg-gray-400">
                 <div className="w-full min-h-screen px-5 py-5 mt-3">
-                    <h1 className="text-3xl text-black font-bold text-center">Dashboard</h1>
+                    <h1 className="">Dashboard</h1>
                 </div>
             </div>
         </>

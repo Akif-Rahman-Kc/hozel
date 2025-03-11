@@ -6,41 +6,6 @@ import Parent from "../model/parent-schema.js";
 
 //////////////////////////////////////////////////////  STUDENT  //////////////////////////////////////////////////////
 
-export async function studentRegister(req, res) {
-    try {
-        const { student_id, name, mobile_no, parent_mobile_no, room_no, age, gender, year, department, password, verify } = req.body
-        if (student_id != "" && name != "" && mobile_no != "" && parent_mobile_no != "" && room_no != "" && age != "" && gender != "" && year != "" && department != "" && password != "") {
-            if (verify) {
-                const exist_student = await Student.findOne({ student_id: student_id })
-                if (exist_student) {
-                    res.json({ status: "failed", message: "This student_id already registered, please try login" })
-                } else {
-                    const fiftyYearsInSeconds = 50 * 365 * 24 * 60 * 60; // 50 years in seconds
-
-                    const pwd = await hash(password, 10)
-                    await Student.create({ student_id, name, mobile_no, parent_mobile_no, room_no, age, gender, year, department, password: pwd })
-                    const student = await Student.findOne({ student_id: student_id })
-                    if (student) {
-                        req.body.password = await hash(password, 10)
-                        await Parent.create({username: student_id, password: pwd})
-                    }
-                    const studentId = student._id
-                    const token = jwt.sign({ studentId }, process.env.JWT_SECRET_KEY, { expiresIn: fiftyYearsInSeconds })
-                    res.json({ status: "success", auth: true, token: token })
-                }
-            } else {
-                res.json({ status: "failed", message: "You didnt verify your phone number" })
-            }
-        } else {
-            res.json({ status: "failed", message: "Please enter your all details" })
-        }
-    } catch (error) {
-        console.log(error);
-        
-        res.json({ status: "failed", message: "Code error" })
-    }
-}
-
 export async function studentLogin(req, res) {
     try {
         const { student_id, password } = req.body

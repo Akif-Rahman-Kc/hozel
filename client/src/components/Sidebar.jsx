@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { faChartSimple, faUser, faBed, faScroll, faUserTie, faCircleCheck } from '@fortawesome/free-solid-svg-icons';
+import { faChartSimple, faUser, faBed, faScroll, faUserTie, faCircleCheck, faUtensils } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useNavigate } from 'react-router-dom';
 
 function SidebarComponent({ now }) {
-    const admin = localStorage.getItem("admin")
+    // const admin = localStorage.getItem("admin")
 
     // navigate
     const navigate = useNavigate()
@@ -31,6 +31,10 @@ function SidebarComponent({ now }) {
                 <div onClick={() => {setCurrent('rooms'); navigate('/hostel/rooms')}} className={current === "rooms" ? "flex flex-row w-full bg-blue-800 px-8 py-3" : "flex flex-row w-full hover:bg-gray-500 px-8 py-3"}>
                     <FontAwesomeIcon className="mt-1" icon={faBed} color={current === "rooms" ? "white" : "black"} size="md" />
                     <h1 className={current === "rooms" ? "text-md font-semibold text-white ml-2" : "text-md font-semibold text-black ml-2"}>Rooms</h1>
+                </div>
+                <div onClick={() => {setCurrent('menus'); navigate('/hostel/menus')}} className={current === "menus" ? "flex flex-row w-full bg-blue-800 px-8 py-3" : "flex flex-row w-full hover:bg-gray-500 px-8 py-3"}>
+                    <FontAwesomeIcon className="mt-1" icon={faUtensils} color={current === "menus" ? "white" : "black"} size="md" />
+                    <h1 className={current === "menus" ? "text-md font-semibold text-white ml-2" : "text-md font-semibold text-black ml-2"}>Menus</h1>
                 </div>
                 <div onClick={() => {setCurrent('complaints'); navigate('/hostel/complaints')}} className={current === "complaints" ? "flex flex-row w-full bg-blue-800 px-8 py-3" : "flex flex-row w-full hover:bg-gray-500 px-8 py-3"}>
                     <FontAwesomeIcon className="mt-1" icon={faScroll} color={current === "complaints" ? "white" : "black"} size="md" />

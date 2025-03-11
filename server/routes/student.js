@@ -2,7 +2,7 @@ import { Router } from 'express';
 const router = Router();
 import multer from 'multer'
 import { studentJWT } from '../middleware/auth.js';
-import { studentAuth, studentLogin, studentRegister } from '../controller/auth.js';
+import { studentAuth, studentLogin } from '../controller/auth.js';
 import { createComplaint } from '../controller/complaint.js';
 
 ///////////////// Multer /////////////////
@@ -20,7 +20,6 @@ const uploads = multer({ storage, fileFilter });
 //////////////////////////////////////////
 
 // Authentication
-router.post('/register', studentRegister)
 router.post('/login', studentLogin)
 router.post('/auth', studentJWT,studentAuth)
 

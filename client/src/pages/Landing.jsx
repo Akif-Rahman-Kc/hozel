@@ -18,7 +18,7 @@ const LandingPage = () => {
                 if (token) {
                     const auth = await HostelAuthApi(token)
                     if (auth && auth.status === "success" && auth.auth) {
-                        navigate("/")
+                        navigate("/hostel/dashboard")
                     }
                 }
             } else if (admin === "parent") {
@@ -26,7 +26,7 @@ const LandingPage = () => {
                 if (token) {
                     const auth = await ParentAuthApi(token)
                     if (auth && auth.status === "success" && auth.auth) {
-                        navigate("/")
+                        navigate("/parent/home")
                     }
                 }
             } else {
@@ -34,7 +34,7 @@ const LandingPage = () => {
                 if (token) {
                     const auth = await StudentAuthApi(token)
                     if (auth && auth.status === "success" && auth.auth) {
-                        navigate("/")
+                        navigate("/student/home")
                     }
                 }
             }
@@ -46,9 +46,9 @@ const LandingPage = () => {
     const handleSubmit = (admin) => {
         localStorage.setItem("admin", admin)
         if (admin === "hostel") {
-            navigate("/hostel/login")   
+            navigate("/hostel/login")
         } else if (admin === "parent") {
-            navigate("/parent/login")
+            navigate("/login")
         } else {
             navigate("/login")
         }

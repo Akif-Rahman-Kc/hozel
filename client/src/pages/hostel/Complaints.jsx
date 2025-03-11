@@ -36,7 +36,7 @@ const HostelComplaintsPage = () => {
             } else {
                 alert("You dont have access this page")
                 localStorage.removeItem('admin');
-                navigate('/landing')
+                navigate('/')
             } 
         }
         auth()

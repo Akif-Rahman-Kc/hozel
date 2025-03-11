@@ -28,7 +28,7 @@ const HostelLoginPage = () => {
             } else {
                 alert("You dont have access this page")
                 localStorage.removeItem('admin');
-                navigate('/landing')
+                navigate('/')
             } 
         }
         auth()
@@ -67,7 +67,7 @@ const HostelLoginPage = () => {
                     } else {
                         alert("You dont have access this page")
                         localStorage.removeItem('admin');
-                        navigate('/landing')
+                        navigate('/')
                     }
                 }
             }

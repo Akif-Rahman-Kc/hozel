@@ -49,7 +49,7 @@ const HostelRoomsPage = () => {
             } else {
                 alert("You dont have access this page")
                 localStorage.removeItem('admin');
-                navigate('/landing')
+                navigate('/')
             } 
         }
         auth()
@@ -440,7 +440,7 @@ const HostelRoomsPage = () => {
                                             <span className="text-red-500">*</span>
                                         </label>
                                         <input
-                                            type="text"
+                                            type="number"
                                             id="room_no"
                                             name="room_no"
                                             placeholder="Enter room no"
@@ -457,7 +457,7 @@ const HostelRoomsPage = () => {
                                             <span className="text-red-500">*</span>
                                         </label>
                                         <select required className="w-full text-gray-300 text-sm bg-gray-900 capitalize px-2 py-1.5 rounded-md border border-gray-500" name={"room_type"} id={"room_type"} value={formData.room_type} onChange={addModalChange}>
-                                            <option value="">Select category</option>
+                                            <option value="">Select room type</option>
                                             {["Single", "Double", "Triple", "Dormitory"].map((item) => (
                                                 <option key={item} value={item}>{item}</option>
                                             ))}
@@ -470,7 +470,7 @@ const HostelRoomsPage = () => {
                                             <span className="text-red-500">*</span>
                                         </label>
                                         <input
-                                            type="text"
+                                            type="number"
                                             id="capacity"
                                             name="capacity"
                                             placeholder="Enter capacity"
@@ -510,7 +510,7 @@ const HostelRoomsPage = () => {
                                             <span className="text-red-500">*</span>
                                         </label>
                                         <input
-                                            type="text"
+                                            type="number"
                                             id="price"
                                             name="price"
                                             placeholder="Enter price"
@@ -589,7 +589,7 @@ const HostelRoomsPage = () => {
                                             <span className="text-red-500">*</span>
                                         </label>
                                         <input
-                                            type="text"
+                                            type="number"
                                             id="room_no"
                                             name="room_no"
                                             placeholder="Enter room no"
@@ -606,7 +606,7 @@ const HostelRoomsPage = () => {
                                             <span className="text-red-500">*</span>
                                         </label>
                                         <select required className="w-full text-gray-300 text-sm bg-gray-900 capitalize px-2 py-1.5 rounded-md border border-gray-500" name={"room_type"} id={"room_type"} value={formData.room_type} onChange={editModalChange}>
-                                            <option value="">Select category</option>
+                                            <option value="">Select room type</option>
                                             {["Single", "Double", "Triple", "Dormitory"].map((item) => (
                                                 <option key={item} value={item}>{item}</option>
                                             ))}
@@ -619,7 +619,7 @@ const HostelRoomsPage = () => {
                                             <span className="text-red-500">*</span>
                                         </label>
                                         <input
-                                            type="text"
+                                            type="number"
                                             id="capacity"
                                             name="capacity"
                                             placeholder="Enter capacity"
@@ -659,7 +659,7 @@ const HostelRoomsPage = () => {
                                             <span className="text-red-500">*</span>
                                         </label>
                                         <input
-                                            type="text"
+                                            type="number"
                                             id="price"
                                             name="price"
                                             placeholder="Enter price"

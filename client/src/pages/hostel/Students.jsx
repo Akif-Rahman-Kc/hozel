@@ -5,7 +5,7 @@ import NavbarComponent from "../../components/Navbar";
 import SidebarComponent from "../../components/Sidebar";
 import FilterDropdown from "../../components/FilterDropdown";
 import { useNavigate } from "react-router-dom";
-import { HostelAuthApi, HostelStudentDelete, HostelStudentList, HostelStudentStatusUpdate, HostelStudentUpdate } from "../../apis/hostel";
+import { HostelAuthApi, HostelStudentCreate, HostelStudentDelete, HostelStudentList, HostelStudentStatusUpdate, HostelStudentUpdate } from "../../apis/hostel";
 
 
 const HostelStudentsPage = () => {
@@ -19,12 +19,15 @@ const HostelStudentsPage = () => {
     const [studentRefresh, setStudentRefresh] = useState(false)
     const [selectedValue, setSelectedValue] = useState({department: "", year: "", gender: "", status: ""});
     const [showFilter, setShowFilter] = useState(false);
+    const [isAddModalOpen, setIsAddModalOpen] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [index, setIndex] = useState(0);
+    const [addData, setAddData] = useState({})
     const [formData, setFormData] = useState({
         name: "",
         mobile_no: "",
+        parent_mobile_no: "",
         age: "",
         gender: ""
     });
@@ -45,7 +48,7 @@ const HostelStudentsPage = () => {
             } else {
                 alert("You dont have access this page")
                 localStorage.removeItem('admin');
-                navigate('/landing')
+                navigate('/')
             } 
         }
         auth()
@@ -122,6 +125,40 @@ const HostelStudentsPage = () => {
         setRefresh(!refresh)
         setShowFilter(false)
     }
+
+    // add modal open
+    const addModalOpen = () => {
+        setIsAddModalOpen(true)
+    }
+
+    // add modal change
+    const addModalChange = (e) => {
+        const { name, value } = e.target;
+        setAddData((prevData) => ({
+            ...prevData,
+            [name]: value,
+        }));
+    };
+
+    // add modal submit
+    const addModalSubmit = async (e) => {
+        e.preventDefault();
+        console.log("Form Data Submitted:", addData);
+        if (admin === "hostel") {
+            const token = localStorage.getItem("hosteltoken")
+            if (token) {
+                const response = await HostelStudentCreate(token, addData)
+                if (response && response.status === "success") {
+                    setStudentRefresh(!studentRefresh)
+                    setIsAddModalOpen(false)
+                } else {
+                    alert(response?.message)
+                }
+            } else {
+                alert("You cant add student, Please login first")
+            }
+        }
+    };
 
     // edit modal open
     const editModalOpen = (index) => {
@@ -228,10 +265,10 @@ const HostelStudentsPage = () => {
                                     {/* content inside the filter box */}
                                     {/* dropdown */}
                                     <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                                        <FilterDropdown key_name={"department"} items={["Mechanical", "Electronics", "Computer"]} selectedValue={selectedValue.department} setSelectedValue={setSelectedValue} />
-                                        <FilterDropdown key_name={"year"} items={["First", "Second", "Third"]} selectedValue={selectedValue.year} setSelectedValue={setSelectedValue} />
+                                        <FilterDropdown key_name={"department"} items={["Mechanical", "Electronics", "Computer", "Civil"]} selectedValue={selectedValue.department} setSelectedValue={setSelectedValue} />
+                                        <FilterDropdown key_name={"year"} items={["First", "Second", "Third", "Fourth"]} selectedValue={selectedValue.year} setSelectedValue={setSelectedValue} />
                                         <FilterDropdown key_name={"gender"} items={["male", "female", "other"]} selectedValue={selectedValue.gender} setSelectedValue={setSelectedValue} />
-                                        <FilterDropdown key_name={"status"} items={["Pending", "Active", "Inactive"]} selectedValue={selectedValue.status} setSelectedValue={setSelectedValue} />
+                                        <FilterDropdown key_name={"status"} items={["Active", "Inactive"]} selectedValue={selectedValue.status} setSelectedValue={setSelectedValue} />
                                     </div>
                                     {/* button */}
                                     <div className="flex justify-center mt-4">
@@ -247,8 +284,15 @@ const HostelStudentsPage = () => {
                         }
                         {/* Filter box End */}
                     </div>
+                    {/* Add Room Start */}
+                    <div className={`w-full flex justify-center ${showFilter ? "mt-96 sm:mt-56 lg:mt-36" : ""}`}>
+                        <button onClick={addModalOpen} className="w-full mb-2 text-white py-2 text-xxs font-extrabold uppercase rounded bg-green-700 hover:bg-green-800">
+                            Add Student
+                        </button>
+                    </div>
+                    {/* Add Room End */}
                     {/* Table Start */}
-                    <div className={`w-full bg-gray-300 overflow-x-auto rounded-md ${showFilter ? "mt-96 sm:mt-56 lg:mt-36" : ""}`}>
+                    <div className="w-full bg-gray-300 overflow-x-auto rounded-md">
                         <table className="w-full table-auto border-collapse border border-gray-900">
                             <thead>
                                 <tr>
@@ -347,10 +391,234 @@ const HostelStudentsPage = () => {
                         </table>
                     </div>
                     {/* Table End */}
+                    {/* Add Modal Start */}
+                    {isAddModalOpen && (
+                        <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 mt-3">
+                            <div className="bg-gray-700 px-6 py-3 rounded-lg shadow-lg w-96 relative max-h-[80vh] overflow-y-auto custom-scrollbar">
+                                {/* close button */}
+                                <button
+                                    className="absolute top-4 right-4 text-gray-300 hover:text-gray-500"
+                                    onClick={() => setIsAddModalOpen(false)}
+                                >
+                                    &times;
+                                </button>
+
+                                {/* modal content */}
+                                <h2 className="text-xl text-white text-center font-bold mb-2">Add Student</h2>
+                                {/* form */}
+                                <form onSubmit={addModalSubmit}>
+                                    {/* student_id field */}
+                                    <div className="mb-2">
+                                        <label htmlFor="student_id" className="block text-sm font-medium text-gray-300">
+                                            Student ID
+                                            <span className="text-red-500">*</span>
+                                        </label>
+                                        <input
+                                            type="text"
+                                            id="student_id"
+                                            name="student_id"
+                                            placeholder="Enter student id"
+                                            className="shadow appearance-none bg-gray-900 text-sm border border-gray-500 rounded-md w-full py-1.5 px-3 text-gray-300 leading-tight focus:outline-none focus:shadow-outline mt-0.5"
+                                            value={addData.student_id}
+                                            onChange={addModalChange}
+                                            required
+                                        />
+                                    </div>
+                                    {/* name field */}
+                                    <div className="mb-2">
+                                        <label htmlFor="name" className="block text-sm font-medium text-gray-300">
+                                            Name
+                                            <span className="text-red-500">*</span>
+                                        </label>
+                                        <input
+                                            type="text"
+                                            id="name"
+                                            name="name"
+                                            placeholder="Enter name"
+                                            className="shadow appearance-none bg-gray-900 text-sm border border-gray-500 rounded-md w-full py-1.5 px-3 text-gray-300 leading-tight focus:outline-none focus:shadow-outline mt-0.5"
+                                            value={addData.name}
+                                            onChange={addModalChange}
+                                            required
+                                        />
+                                    </div>
+                                    {/* mobile_no field */}
+                                    <div className="mb-2">
+                                        <label htmlFor="mobile_no" className="block text-sm font-medium text-gray-300">
+                                            Mobile No
+                                            <span className="text-red-500">*</span>
+                                        </label>
+                                        <input
+                                            type="number"
+                                            maxLength={10}
+                                            id="mobile_no"
+                                            name="mobile_no"
+                                            placeholder="Enter mobile no"
+                                            className="shadow appearance-none bg-gray-900 text-sm border border-gray-500 rounded-md w-full py-1.5 px-3 text-gray-300 leading-tight focus:outline-none focus:shadow-outline mt-0.5"
+                                            value={addData.mobile_no}
+                                            onChange={addModalChange}
+                                            required
+                                        />
+                                    </div>
+                                    {/* parent_mobile_no field */}
+                                    <div className="mb-2">
+                                        <label htmlFor="parent_mobile_no" className="block text-sm font-medium text-gray-300">
+                                            Parent Mobile No ( Whatsapp No )
+                                            <span className="text-red-500">*</span>
+                                        </label>
+                                        <input
+                                            type="number"
+                                            maxLength={10}
+                                            id="parent_mobile_no"
+                                            name="parent_mobile_no"
+                                            placeholder="Enter parent mobile no"
+                                            className="shadow appearance-none bg-gray-900 text-sm border border-gray-500 rounded-md w-full py-1.5 px-3 text-gray-300 leading-tight focus:outline-none focus:shadow-outline mt-0.5"
+                                            value={addData.parent_mobile_no}
+                                            onChange={addModalChange}
+                                            required
+                                        />
+                                    </div>
+                                    {/* room_no field */}
+                                    <div className="mb-2">
+                                        <label htmlFor="room_no" className="block text-sm font-medium text-gray-300">
+                                            Room No
+                                            <span className="text-red-500">*</span>
+                                        </label>
+                                        <input
+                                            type="number"
+                                            id="room_no"
+                                            name="room_no"
+                                            placeholder="Enter room no"
+                                            className="shadow appearance-none bg-gray-900 text-sm border border-gray-500 rounded-md w-full py-1.5 px-3 text-gray-300 leading-tight focus:outline-none focus:shadow-outline mt-0.5"
+                                            value={addData.room_no}
+                                            onChange={addModalChange}
+                                            required
+                                        />
+                                    </div>
+                                    {/* age field */}
+                                    <div className="mb-2">
+                                        <label htmlFor="age" className="block text-sm font-medium text-gray-300">
+                                            Age
+                                            <span className="text-red-500">*</span>
+                                        </label>
+                                        <input
+                                            type="number"
+                                            maxLength={2}
+                                            id="age"
+                                            name="age"
+                                            placeholder="Enter age"
+                                            className="shadow appearance-none bg-gray-900 text-sm border border-gray-500 rounded-md w-full py-1.5 px-3 text-gray-300 leading-tight focus:outline-none focus:shadow-outline mt-0.5"
+                                            value={addData.age}
+                                            onChange={addModalChange}
+                                            required
+                                        />
+                                    </div>
+                                    {/* gender field */}
+                                    <div className="mb-4">
+                                        <label htmlFor="gender" className="block text-sm font-medium text-gray-300">
+                                            Gender
+                                            <span className="text-red-500">*</span>
+                                        </label>
+                                        <div className="flex items-center mt-2">
+                                            <label className="mr-4 text-sm text-gray-300 lowercase">
+                                                <input
+                                                    type="radio"
+                                                    id="gender"
+                                                    name="gender"
+                                                    value="male"
+                                                    checked={addData.gender === "male"}
+                                                    onChange={addModalChange}
+                                                    className="mr-1"
+                                                />
+                                                Male
+                                            </label>
+                                            <label className="mr-4 text-sm text-gray-300 lowercase">
+                                                <input
+                                                    type="radio"
+                                                    id="gender"
+                                                    name="gender"
+                                                    value="female"
+                                                    checked={addData.gender === "female"}
+                                                    onChange={addModalChange}
+                                                    className="mr-1"
+                                                />
+                                                Female
+                                            </label>
+                                            <label className="text-sm text-gray-300 lowercase">
+                                                <input
+                                                    type="radio"
+                                                    id="gender"
+                                                    name="gender"
+                                                    value="other"
+                                                    checked={addData.gender === "other"}
+                                                    onChange={addModalChange}
+                                                    className="mr-1"
+                                                />
+                                                Other
+                                            </label>
+                                        </div>
+                                    </div>
+                                    {/* year field */}
+                                    <div className="mb-2">
+                                        <label htmlFor="year" className="block text-sm font-medium text-gray-300">
+                                            Year
+                                            <span className="text-red-500">*</span>
+                                        </label>
+                                        <select required className="w-full text-gray-300 text-sm bg-gray-900 capitalize px-2 py-1.5 rounded-md border border-gray-500" name={"year"} id={"year"} value={addData.year} onChange={addModalChange}>
+                                            <option value="">Select year</option>
+                                            {["First", "Second", "Third", "Fourth"].map((item) => (
+                                                <option key={item} value={item}>{item}</option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                    {/* department field */}
+                                    <div className="mb-2">
+                                        <label htmlFor="department" className="block text-sm font-medium text-gray-300">
+                                            Department
+                                            <span className="text-red-500">*</span>
+                                        </label>
+                                        <select required className="w-full text-gray-300 text-sm bg-gray-900 capitalize px-2 py-1.5 rounded-md border border-gray-500" name={"department"} id={"department"} value={addData.department} onChange={addModalChange}>
+                                            <option value="">Select department</option>
+                                            {["Mechanical", "Electronics", "Computer", "Civil"].map((item) => (
+                                                <option key={item} value={item}>{item}</option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                    {/* password field */}
+                                    <div className="mb-2">
+                                        <label htmlFor="password" className="block text-sm font-medium text-gray-300">
+                                            Password
+                                            <span className="text-red-500">*</span>
+                                        </label>
+                                        <input
+                                            type="password"
+                                            id="password"
+                                            name="password"
+                                            placeholder="Enter password"
+                                            className="shadow appearance-none bg-gray-900 text-sm border border-gray-500 rounded-md w-full py-1.5 px-3 text-gray-300 leading-tight focus:outline-none focus:shadow-outline mt-0.5"
+                                            value={addData.password}
+                                            onChange={addModalChange}
+                                            required
+                                        />
+                                    </div>
+
+                                    {/* submit button */}
+                                    <div className="flex justify-center mt-4">
+                                        <button
+                                            type="submit"
+                                            className="mt-4 border-2 border-blue-500 text-blue-500 hover:text-white px-4 py-2 text-xxs rounded font-bold uppercase hover:bg-blue-500"
+                                        >
+                                            Submit
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    )}
+                    {/* Add Modal End */}
                     {/* Edit Modal Start */}
                     {isEditModalOpen && (
                         <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
-                            <div className="bg-gray-700 p-6 rounded-lg shadow-lg w-96 relative">
+                            <div className="bg-gray-700 p-6 rounded-lg shadow-lg w-96 relative max-h-[80vh] overflow-y-auto custom-scrollbar">
                                 {/* close button */}
                                 <button
                                     className="absolute top-4 right-4 text-gray-300 hover:text-gray-500"
@@ -387,12 +655,31 @@ const HostelStudentsPage = () => {
                                             <span className="text-red-500">*</span>
                                         </label>
                                         <input
-                                            type="text"
+                                            type="number"
+                                            maxLength={10}
                                             id="mobile_no"
                                             name="mobile_no"
                                             placeholder="Enter mobile no"
                                             className="shadow appearance-none bg-gray-900 text-sm border border-gray-500 rounded-md w-full py-1.5 px-3 text-gray-300 leading-tight focus:outline-none focus:shadow-outline mt-0.5"
                                             value={formData.mobile_no}
+                                            onChange={editModalChange}
+                                            required
+                                        />
+                                    </div>
+                                    {/* parent mobile no field */}
+                                    <div className="mb-4">
+                                        <label htmlFor="parent_mobile_no" className="block text-sm font-medium text-gray-300">
+                                            Parent Mobile No
+                                            <span className="text-red-500">*</span>
+                                        </label>
+                                        <input
+                                            type="number"
+                                            maxLength={10}
+                                            id="parent_mobile_no"
+                                            name="parent_mobile_no"
+                                            placeholder="Enter parent mobile no"
+                                            className="shadow appearance-none bg-gray-900 text-sm border border-gray-500 rounded-md w-full py-1.5 px-3 text-gray-300 leading-tight focus:outline-none focus:shadow-outline mt-0.5"
+                                            value={formData.parent_mobile_no}
                                             onChange={editModalChange}
                                             required
                                         />
@@ -404,7 +691,8 @@ const HostelStudentsPage = () => {
                                             <span className="text-red-500">*</span>
                                         </label>
                                         <input
-                                            type="text"
+                                            type="number"
+                                            maxLength={2}
                                             id="age"
                                             name="age"
                                             placeholder="Enter age"

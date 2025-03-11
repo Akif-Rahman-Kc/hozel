@@ -1,6 +1,49 @@
 import Student from "../model/student-schema.js";
+import Room from "../model/room-schema.js";
+import Parent from "../model/parent-schema.js";
+import { compare, hash } from "bcrypt";
 
 //////////////////////////////////////////////////////  STUDENT  //////////////////////////////////////////////////////
+
+export async function createStudent(req, res) {
+    try {
+        const { student_id, name, mobile_no, parent_mobile_no, room_no, age, gender, year, department, password } = req.body
+        if (student_id != "" && name != "" && mobile_no != "" && parent_mobile_no != "" && room_no != "" && age != "" && gender != "" && year != "" && department != "" && password != "") {
+            // room available or not checking
+            const room = await Room.findOne({ room_no: room_no })
+            if (!room?.availability) {
+                res.json({ status: "failed", message: "Room not available" })
+            } else {
+                // student add
+                const exist_student = await Student.findOne({ student_id: student_id })
+                if (exist_student) {
+                    res.json({ status: "failed", message: "This student_id already registered, please try login" })
+                } else {
+                    const pwd = await hash(password, 10)
+                    await Student.create({ student_id, name, mobile_no, parent_mobile_no, room_no, age, gender, year, department, password: pwd })
+                    const student = await Student.findOne({ student_id: student_id })
+                    // room availability reducing
+                    await Room.updateOne({ _id: room._id }, {
+                        $set: {
+                            availability: room.availability - 1
+                        }
+                    })
+                    // parent add
+                    if (student) {
+                        req.body.password = await hash(password, 10)
+                        await Parent.create({username: student_id, password: pwd})
+                    }
+                    res.json({ status: "success" })
+                }
+            }
+        } else {
+            res.json({ status: "failed", message: "Please enter your all details" })
+        }
+    } catch (error) {
+        console.log(error);
+        res.json({ status: "failed", message: "Code error" })
+    }
+}
 
 // export async function detailsStudent(req, res) {
 //     try {

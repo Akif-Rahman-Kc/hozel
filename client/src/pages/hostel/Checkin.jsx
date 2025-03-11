@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import NavbarComponent from "../../components/Navbar";
 import SidebarComponent from "../../components/Sidebar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCopy, faPhone, faSquareCheck, faMessage } from "@fortawesome/free-solid-svg-icons";
+import { faPhone, faSquareCheck, faMessage } from "@fortawesome/free-solid-svg-icons";
 import PopupAlert from "../../components/PopupAlert";
 import { useNavigate } from "react-router-dom";
 import { HostelAuthApi, HostelCheckinCreate, HostelCheckinList } from "../../apis/hostel";
@@ -17,10 +17,6 @@ const HostelCheckinPage = () => {
     // states
     const [refresh, setRefresh] = useState(false)
     const [checkinrefresh, setCheckinRefresh] = useState(false)
-    const [isViewModalOpen, setIsViewModalOpen] = useState(false);
-    const [copiedOrderId, setCopiedOrderId] = useState(null);
-    const [hoveredOrderId, setHoveredOrderId] = useState(null);
-    const [selectedStudent, setSelectedStudent] = useState(null);
     const [showAlert, setShowAlert] = useState(false);
     const [checkin, setCheckin] = useState([])
     const [allCheckin, setAllCheckin] = useState([])
@@ -39,7 +35,7 @@ const HostelCheckinPage = () => {
             } else {
                 alert("You dont have access this page")
                 localStorage.removeItem('admin');
-                navigate('/landing')
+                navigate('/')
             } 
         }
         auth()
@@ -223,64 +219,6 @@ const HostelCheckinPage = () => {
                         </table>
                     </div>
                     {/* Table */}
-                    {/* View Modal Start */}
-                    {isViewModalOpen && (
-                        <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center">
-                            <div className="bg-gray-700 p-6 rounded shadow-lg w-96 relative">
-                                {/* close button */}
-                                <button
-                                    className="absolute top-4 right-4 text-gray-300 hover:text-gray-500"
-                                    onClick={() => setIsViewModalOpen(false)}
-                                >
-                                    &times;
-                                </button>
-                                {/* model content */}
-                                <h2 className="text-lg text-white font-bold text-center mb-2">Due Orders</h2>
-                                {/* dues order items */}
-                                <div className="bg-gray-800 rounded p-4 mb-3">
-                                    <ul className="space-y-2">
-                                        {selectedStudent?.due_orders?.map((item, index) => (
-                                            <li key={index} className="flex justify-between text-gray-300 text-xs relative">
-                                                <div className="flex items-center">
-                                                    {/* popover container */}
-                                                    <div className="relative">
-                                                        {/* copy icon */}
-                                                        <FontAwesomeIcon
-                                                            onClick={() => {
-                                                                navigator.clipboard.writeText(item.order_id);
-                                                                setCopiedOrderId(item.order_id); // set the copied order ID
-                                                                setTimeout(() => setCopiedOrderId(null), 2000); // reset after 2 seconds
-                                                            }}
-                                                            onMouseEnter={() => setHoveredOrderId(item.order_id)} // show "Copy" on hover
-                                                            onMouseLeave={() => setHoveredOrderId(null)} // hide "Copy" on leave
-                                                            className="mr-1 hover:text-gray-500 active:text-gray-400 cursor-pointer"
-                                                            icon={faCopy}
-                                                            color="#4B5563"
-                                                            size="md"
-                                                        />
-                                                        {/* popover box */}
-                                                        {hoveredOrderId === item.order_id && !copiedOrderId && (
-                                                            <div className="absolute -top-8 left-0 bg-gray-500 text-white text-xxs rounded-t-lg rounded-r-lg px-2 py-1 shadow-md">
-                                                                Copy
-                                                            </div>
-                                                        )}
-                                                        {copiedOrderId === item.order_id && (
-                                                            <div className="absolute -top-8 left-0 bg-gray-500 text-white text-xxs rounded-t-lg rounded-r-lg px-2 py-1 shadow-md">
-                                                                Copied
-                                                            </div>
-                                                        )}
-                                                    </div>
-                                                    <span>ORDER_ID: #{item.order_id}</span>
-                                                </div>
-                                                <span>{item.order_total_amount}</span>
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    )}
-                    {/* View Modal End */}
                 </div>
             </div>
         </>

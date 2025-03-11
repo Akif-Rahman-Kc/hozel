@@ -24,6 +24,17 @@ export const HostelAuthApi = async (token) => {
 
 ////////////////////////////////////////////////////////// STUDENT //////////////////////////////////////////////////////////
 
+export const HostelStudentCreate = async (token, form_data) => {
+    try {
+        const { data } = await HostelApi.post('/student/create', form_data, { headers: { "hosteltoken": token } })
+        return data;
+    } catch (error) {
+        return false
+    }
+}
+
+//////////////////////////////////////////////////////////
+
 export const HostelStudentList = async (token) => {
     try {
         const { data } = await HostelApi.get('/student/list', { headers: { "hosteltoken": token } })
@@ -126,6 +137,28 @@ export const HostelRoomStatusUpdate = async (token, form_data) => {
 export const HostelRoomDelete = async (token, _id) => {
     try {
         const { data } = await HostelApi.delete(`/room/delete?_id=${_id}`, { headers: { "hosteltoken": token } })
+        return data;
+    } catch (error) {
+        return false
+    }
+}
+
+////////////////////////////////////////////////////////// MENU //////////////////////////////////////////////////////////
+
+export const HostelMenuList = async (token) => {
+    try {
+        const { data } = await HostelApi.get('/menu/list', { headers: { "hosteltoken": token } })
+        return data;
+    } catch (error) {
+        return false
+    }
+}
+
+//////////////////////////////////////////////////////////
+
+export const HostelMenuUpdate = async (token, form_data) => {
+    try {
+        const { data } = await HostelApi.patch('/menu/update', form_data, { headers: { "hosteltoken": token } })
         return data;
     } catch (error) {
         return false
