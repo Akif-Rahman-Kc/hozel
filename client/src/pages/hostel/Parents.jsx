@@ -124,11 +124,11 @@ const HostelParentsPage = () => {
                                             {item.student_name}
                                         </td>
                                         <td className="border text-sm text-black text-md border-gray-500 px-4 py-2">
-                                            {item.username}
+                                            {item.mobile_no}
                                         </td>
                                         <td className="border text-xs border-gray-500 w-1/12 px-4 py-2">
                                             <div className="w-full flex justify-center">
-                                                <a href={`tel:+91${item.username}`}><FontAwesomeIcon className="mt-1 mr-2" icon={faPhone} color="#60A5FA" size="md" /></a>
+                                                <a href={`tel:+91${item.mobile_no}`}><FontAwesomeIcon className="mt-1 mr-2" icon={faPhone} color="#60A5FA" size="md" /></a>
                                             </div>
                                         </td>
                                     </tr>
