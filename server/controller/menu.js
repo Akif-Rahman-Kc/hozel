@@ -8,7 +8,7 @@ import Menu from "../model/menu-schema.js";
 //         await Menu.create({day, items});
 //         res.json({ status: "success" });
 //     } catch (error) {
-//         res.json({ status: "failed", message: "Code error" });
+//         res.json({ status: "failed", message: "Network error" });
 //     }
 // }
 
@@ -17,7 +17,7 @@ export async function listMenu(req, res) {
         const menus = await Menu.find().sort({ created_at: -1 })
         res.json({ status: "success", menus })
     } catch (error) {
-        res.json({ status: "failed", message: "Code error" })
+        res.json({ status: "failed", message: "Network error" })
     }
 }
 
@@ -37,6 +37,6 @@ export async function updateMenu(req, res) {
             res.json({ status: "failed", message: "This menu not exist" })
         }
     } catch (error) {
-        res.json({ status: "failed", message: "Code error" })
+        res.json({ status: "failed", message: "Network error" })
     }
 }

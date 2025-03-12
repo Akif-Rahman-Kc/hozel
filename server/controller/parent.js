@@ -9,10 +9,10 @@ export async function listParent(req, res) {
         let all_parents = []
         for (const parent of parents) {
             const student = await Student.findOne({ student_id: parent.username })
-            all_parents.push({username: parent.username, student_name: student.name, mobile_no: student.parent_mobile_no})
+            all_parents.push({username: parent.username, student_name: student?.name, mobile_no: student?.parent_mobile_no})
         }
         res.json({ status: "success", parents: all_parents })
     } catch (error) {
-        res.json({ status: "failed", message: "Code error" })
+        res.json({ status: "failed", message: "Network error" })
     }
 }

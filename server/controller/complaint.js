@@ -12,7 +12,7 @@ export async function createComplaint(req, res) {
             res.json({ status: "failed", message: "Please enter full details of complaint"});
         }
     } catch (error) {
-        res.json({ status: "failed", message: "Code error" });
+        res.json({ status: "failed", message: "Network error" });
     }
 }
 
@@ -21,7 +21,7 @@ export async function detailsComplaint(req, res) {
         const complaint = await Complaint.findById(req.query._id)
         res.json({ status: "success", complaint })
     } catch (error) {
-        res.json({ status: "failed", message: "Code error" })
+        res.json({ status: "failed", message: "Network error" })
     }
 }
 
@@ -30,7 +30,7 @@ export async function listComplaint(req, res) {
         const complaints = await Complaint.find().sort({ created_at: -1 })
         res.json({ status: "success", complaints })
     } catch (error) {
-        res.json({ status: "failed", message: "Code error" })
+        res.json({ status: "failed", message: "Network error" })
     }
 }
 
@@ -48,6 +48,6 @@ export async function updateComplaintStatus(req, res) {
             res.json({ status: "failed", message: "This complaint not exist" })
         }
     } catch (error) {
-        res.json({ status: "failed", message: "Code error" })
+        res.json({ status: "failed", message: "Network error" })
     }
 }

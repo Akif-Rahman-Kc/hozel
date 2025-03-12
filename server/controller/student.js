@@ -9,6 +9,15 @@ export async function createStudent(req, res) {
     try {
         const { student_id, name, mobile_no, parent_mobile_no, room_no, age, gender, year, department, password } = req.body
         if (student_id != "" && name != "" && mobile_no != "" && parent_mobile_no != "" && room_no != "" && age != "" && gender != "" && year != "" && department != "" && password != "") {
+            // validation
+            if (password.length < 8) {
+                res.json({ status: "failed", message: "Password minimum 8 characters" })
+                return "okay"
+            }
+            if (mobile_no.length != 10 || parent_mobile_no.length != 10) {
+                res.json({ status: "failed", message: "Mobile number should be 10 digits" })
+                return "okay"
+            }
             // room available or not checking
             const room = await Room.findOne({ room_no: room_no })
             if (!room?.availability) {
@@ -41,7 +50,7 @@ export async function createStudent(req, res) {
         }
     } catch (error) {
         console.log(error);
-        res.json({ status: "failed", message: "Code error" })
+        res.json({ status: "failed", message: "Network error" })
     }
 }
 
@@ -50,7 +59,7 @@ export async function createStudent(req, res) {
 //         const student = await Student.findById(req.query._id)
 //         res.json({ status: "success", student })
 //     } catch (error) {
-//         res.json({ status: "failed", message: "Code error" })
+//         res.json({ status: "failed", message: "Network error" })
 //     }
 // }
 
@@ -59,12 +68,17 @@ export async function listStudent(req, res) {
         const students = await Student.find().sort({ created_at: -1 })
         res.json({ status: "success", students })
     } catch (error) {
-        res.json({ status: "failed", message: "Code error" })
+        res.json({ status: "failed", message: "Network error" })
     }
 }
 
 export async function updateStudent(req, res) {
     try {
+        // validation
+        if (req.body.mobile_no.length != 10 || req.body.parent_mobile_no.length != 10) {
+            res.json({ status: "failed", message: "Mobile number should be 10 digits" })
+            return "okay"
+        }
         const student = await Student.findById(req.body._id)
         if (student) {
             await Student.updateOne({ _id: req.body._id }, {
@@ -83,7 +97,7 @@ export async function updateStudent(req, res) {
             res.json({ status: "failed", message: "This student not exist" })
         }
     } catch (error) {
-        res.json({ status: "failed", message: "Code error" })
+        res.json({ status: "failed", message: "Network error" })
     }
 }
 
@@ -101,7 +115,7 @@ export async function updateStudentStatus(req, res) {
             res.json({ status: "failed", message: "This student not exist" })
         }
     } catch (error) {
-        res.json({ status: "failed", message: "Code error" })
+        res.json({ status: "failed", message: "Network error" })
     }
 }
 
@@ -110,11 +124,22 @@ export async function deleteStudent(req, res) {
         const student = await Student.findById(req.query._id)
         if (student) {
             await Student.deleteOne({ _id: req.query._id })
+            // remove parent also
+            await Parent.deleteOne({ username: student.student_id })
+            // room availability adding
+            const room = await Room.findOne({ room_no: student?.room_no })
+            if (room) {
+                await Room.updateOne({ _id: room._id }, {
+                    $set: {
+                        availability: room.availability + 1
+                    }
+                })
+            }
             res.json({ status: "success" })
         } else {
             res.json({ status: "failed", message: "This student not exist" })
         }
     } catch (error) {
-        res.json({ status: "failed", message: "Code error" })
+        res.json({ status: "failed", message: "Network error" })
     }
 }

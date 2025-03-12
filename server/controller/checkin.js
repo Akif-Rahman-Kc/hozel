@@ -23,7 +23,7 @@ export async function createCheckin(req, res) {
             res.json({ status: "failed", message: "Please give full details of checkin"});
         }
     } catch (error) {
-        res.json({ status: "failed", message: "Code error" });
+        res.json({ status: "failed", message: "Network error" });
     }
 }
 
@@ -65,6 +65,6 @@ export async function listCheckin(req, res) {
         
         res.json({ status: "success", student_data })
     } catch (error) {
-        res.json({ status: "failed", message: "Code error" })
+        res.json({ status: "failed", message: "Network error" })
     }
 }

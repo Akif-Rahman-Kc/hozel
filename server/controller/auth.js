@@ -28,7 +28,7 @@ export async function studentLogin(req, res) {
             res.json({ status: "failed", auth: false, message: "Your mobile_no is incorrect" })
         }
     } catch (error) {
-        res.json({ status: "failed", message: "Code error" })
+        res.json({ status: "failed", message: "Network error" })
     }
 }
 
@@ -45,7 +45,7 @@ export async function studentAuth(req, res) {
             res.json({ status: "success", auth: false })
         }
     } catch (error) {
-        res.json({ status: "failed", message: "Code error" })
+        res.json({ status: "failed", message: "Network error" })
     }
 }
 
@@ -73,7 +73,7 @@ export async function parentLogin(req, res) {
             res.json({ status: "failed", auth: false, type: "username", message: "Your username is incorrect" })
         }
     } catch (error) {
-        res.json({ status: "failed", message: "Code error" })
+        res.json({ status: "failed", message: "Network error" })
     }
 }
 
@@ -86,7 +86,7 @@ export async function parentAuth(req, res) {
             res.json({ status: "success", auth: false })
         }
     } catch (error) {
-        res.json({ status: "failed", message: "Code error" })
+        res.json({ status: "failed", message: "Network error" })
     }
 }
 
@@ -114,7 +114,7 @@ export async function hostelLogin(req, res) {
             res.json({ status: "failed", auth: false, type: "username", message: "Your username is incorrect" })
         }
     } catch (error) {
-        res.json({ status: "failed", message: "Code error" })
+        res.json({ status: "failed", message: "Network error" })
     }
 }
 
@@ -127,6 +127,6 @@ export async function hostelAuth(req, res) {
             res.json({ status: "success", auth: false })
         }
     } catch (error) {
-        res.json({ status: "failed", message: "Code error" })
+        res.json({ status: "failed", message: "Network error" })
     }
 }

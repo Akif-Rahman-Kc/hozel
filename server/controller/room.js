@@ -37,7 +37,7 @@ export async function createRoom(req, res) {
             });
         }
     } catch (error) {
-        res.json({ status: "failed", message: "Code error" });
+        res.json({ status: "failed", message: "Network error" });
     }
 }
 
@@ -46,7 +46,7 @@ export async function detailsRoom(req, res) {
         const room = await Room.findById(req.query._id)
         res.json({ status: "success", room })
     } catch (error) {
-        res.json({ status: "failed", message: "Code error" })
+        res.json({ status: "failed", message: "Network error" })
     }
 }
 
@@ -55,7 +55,7 @@ export async function listRoom(req, res) {
         const rooms = await Room.find().sort({ created_at: -1 })
         res.json({ status: "success", rooms })
     } catch (error) {
-        res.json({ status: "failed", message: "Code error" })
+        res.json({ status: "failed", message: "Network error" })
     }
 }
 
@@ -96,7 +96,7 @@ export async function updateRoom(req, res) {
             res.json({ status: "failed", message: "This room not exist" })
         }
     } catch (error) {
-        res.json({ status: "failed", message: "Code error" })
+        res.json({ status: "failed", message: "Network error" })
     }
 }
 
@@ -114,7 +114,7 @@ export async function updateRoomStatus(req, res) {
             res.json({ status: "failed", message: "This room not exist" })
         }
     } catch (error) {
-        res.json({ status: "failed", message: "Code error" })
+        res.json({ status: "failed", message: "Network error" })
     }
 }
 
@@ -139,6 +139,6 @@ export async function deleteRoom(req, res) {
             res.json({ status: "failed", message: "This room not exist" })
         }
     } catch (error) {
-        res.json({ status: "failed", message: "Code error" })
+        res.json({ status: "failed", message: "Network error" })
     }
 }
