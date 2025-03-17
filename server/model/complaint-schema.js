@@ -1,6 +1,11 @@
 import { Schema, model } from 'mongoose';
 
 const complaintSchema = new Schema({
+    hostel_id:{
+        type:String,
+        required:true,
+        trim:true
+    },
     student_name:{
         type:String,
         required:true,

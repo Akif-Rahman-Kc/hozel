@@ -26,7 +26,7 @@ const LandingPage = () => {
                 if (token) {
                     const auth = await ParentAuthApi(token)
                     if (auth && auth.status === "success" && auth.auth) {
-                        navigate("/parent/home")
+                        navigate("/home")
                     }
                 }
             } else {
@@ -34,7 +34,7 @@ const LandingPage = () => {
                 if (token) {
                     const auth = await StudentAuthApi(token)
                     if (auth && auth.status === "success" && auth.auth) {
-                        navigate("/student/home")
+                        navigate("/home")
                     }
                 }
             }
@@ -46,7 +46,7 @@ const LandingPage = () => {
     const handleSubmit = (admin) => {
         localStorage.setItem("admin", admin)
         if (admin === "hostel") {
-            navigate("/hostel/login")
+            navigate("/hostel/landing")
         } else if (admin === "parent") {
             navigate("/login")
         } else {
@@ -58,22 +58,22 @@ const LandingPage = () => {
     return (
         <>
             <NavbarComponent now={''} />
-            <div className="relative flex w-full h-screen justify-center items-center bg-gray-100 px-4">
+            <div className="relative flex w-full min-h-screen max-h-[1800px] justify-center items-center bg-gray-700 px-4">
                 {/* Transparent Background Image */}
                 <div
                     className="absolute inset-0"
                     style={{
-                        backgroundImage: `url('https://media.istockphoto.com/id/2148731493/vector/abstract-black-energy-waves-from-dotted-line-particles-with-blur-effect-on-trasnparent-white.jpg?s=612x612&w=0&k=20&c=IE499DDlZC9fAXHl4oXmkcCSsu9_9OYGkqZuaQWhZqA=')`,
+                        backgroundImage: `url('https://5.imimg.com/data5/SELLER/Default/2023/5/306562348/BG/CK/SY/114626164/colleges-and-hostels-construction-service.png')`,
                         backgroundSize: 'cover',
                         backgroundPosition: 'center',
                         backgroundRepeat: 'no-repeat',
-                        opacity: 0.2, // Adjust for transparency
+                        opacity: 0.4, // Adjust for transparency
                         zIndex: 0,
                     }}
                 ></div>
                 
                 {/* Content */}
-                <div className="relative flex">
+                <div className="relative grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     <div
                         onClick={() => handleSubmit('student')}
                         style={{
@@ -84,7 +84,7 @@ const LandingPage = () => {
                             zIndex: 0,
                             
                         }}
-                        className="border-2 border-blue-800 flex w-96 h-52 justify-center items-center rounded-lg px-10 py-10 font-bold text-xl uppercase cursor-pointer transition-transform duration-300 hover:scale-105"
+                        className="border-4 border-[#1B263B] flex w-96 h-52 ml-3 justify-center items-center rounded-lg px-10 py-10 font-bold text-xl uppercase cursor-pointer transition-transform duration-300 hover:scale-105"
                     >
                         <h1>Student</h1>
                     </div>
@@ -97,7 +97,7 @@ const LandingPage = () => {
                             backgroundRepeat: 'no-repeat',
                             zIndex: 0,
                         }}
-                        className="border-2 border-blue-800 flex w-96 h-52 ml-3 justify-center items-center rounded-lg px-10 py-10 font-bold text-xl uppercase cursor-pointer transition-transform duration-300 hover:scale-105"
+                        className="border-4 border-[#1B263B] flex w-96 h-52 ml-3 justify-center items-center rounded-lg px-10 py-10 font-bold text-xl uppercase cursor-pointer transition-transform duration-300 hover:scale-105"
                     >
                         <h1>Parent</h1>
                     </div>
@@ -110,7 +110,7 @@ const LandingPage = () => {
                             backgroundRepeat: 'no-repeat',
                             zIndex: 0,
                         }}
-                        className="border-2 border-blue-800 flex w-96 h-52 ml-3 justify-center items-center rounded-lg px-10 py-10 font-bold text-xl uppercase cursor-pointer transition-transform duration-300 hover:scale-105"
+                        className="border-4 border-[#1B263B] flex w-96 h-52 ml-3 justify-center items-center rounded-lg px-10 py-10 font-bold text-xl uppercase cursor-pointer transition-transform duration-300 hover:scale-105"
                     >
                         <h1>Hostel</h1>
                     </div>

@@ -127,8 +127,8 @@ const HostelCheckinPage = () => {
                 )
             }
             {/* Popup Alert End */}
-            <div className="w-auto min-h-screen px-3 pt-16 md:ml-60 lg:ml-80 bg-gray-400">
-                <div className="w-full min-h-screen px-5 py-5 mt-3">
+            <div className="w-auto min-h-screen px-3 pt-16 md:ml-60 lg:ml-80 bg-[#1B263B]">
+                <div className="w-full min-h-screen rounded-lg px-5 py-5 mt-3 bg-[#7b8794]">
                     {/* Filters */}
                     <div className="mb-3 flex w-full items-center">
                         {/* Search Bar Start */}
@@ -137,7 +137,7 @@ const HostelCheckinPage = () => {
                                 type="text"
                                 id="search"
                                 placeholder="Search..."
-                                className="flex px-4 w-7/12 lg:w-4/12 py-1 bg-gray-200 border border-gray-800 rounded-md text-black text-xs lg:text-sm"
+                                className="flex px-4 w-7/12 lg:w-4/12 py-1 bg-gray-200 border border-gray-800 rounded-lg text-black text-xs lg:text-sm"
                                 // value={search}
                                 onChange={(e) => search(e.target.value)}
                             />
@@ -146,32 +146,32 @@ const HostelCheckinPage = () => {
                         <div className="w-1/2 flex justify-end"></div>
                     </div>
                     {/* Table */}
-                    <div className="w-full bg-gray-300 overflow-x-auto rounded-md">
+                    <div className="w-full bg-gray-300 overflow-x-auto rounded-xl">
                         <table className="w-full table-auto border-collapse border border-gray-900">
                             <thead>
                                 <tr>
-                                    <th className="text-md text-white border border-gray-500 px-4 py-2 bg-gray-600 capitalize">
+                                    <th className="text-md text-white border border-gray-500 px-4 py-2 bg-[#1B263B] capitalize">
                                         Name
                                     </th>
-                                    <th className="text-md text-white border border-gray-500 px-4 py-2 bg-gray-600 capitalize">
+                                    <th className="text-md text-white border border-gray-500 px-4 py-2 bg-[#1B263B] capitalize">
                                         Mobile No
                                     </th>
-                                    <th className="text-md text-white border border-gray-500 px-4 py-2 bg-gray-600 capitalize">
+                                    <th className="text-md text-white border border-gray-500 px-4 py-2 bg-[#1B263B] capitalize">
                                         Parent Mobile No
                                     </th>
-                                    <th className="text-md text-white border border-gray-500 px-4 py-2 bg-gray-600 capitalize">
+                                    <th className="text-md text-white border border-gray-500 px-4 py-2 bg-[#1B263B] capitalize">
                                         Room No
                                     </th>
-                                    <th className="text-md text-white border border-gray-500 px-4 py-2 bg-gray-600 capitalize">
+                                    <th className="text-md text-white border border-gray-500 px-4 py-2 bg-[#1B263B] capitalize">
                                         Checkin Days
                                     </th>
-                                    <th className="text-md text-white border border-gray-500 px-4 py-2 bg-gray-600 capitalize">
+                                    <th className="text-md text-white border border-gray-500 px-4 py-2 bg-[#1B263B] capitalize">
                                         Payable Rent
                                     </th>
-                                    <th className="text-md text-white border border-gray-500 px-4 py-2 bg-gray-600 capitalize">
+                                    <th className="text-md text-white border border-gray-500 px-4 py-2 bg-[#1B263B] capitalize">
                                         Today Checkin
                                     </th>
-                                    <th className="text-md text-white border border-gray-500 px-4 py-2 bg-gray-600 capitalize">
+                                    <th className="text-md text-white border border-gray-500 px-4 py-2 bg-[#1B263B] capitalize">
                                         Options
                                     </th>
                                 </tr>
@@ -179,25 +179,25 @@ const HostelCheckinPage = () => {
                             <tbody>
                                 {checkin.map((item, index) => (
                                     <tr key={index}>
-                                        <td className="border text-black text-sm text-md border-gray-500 px-4 py-2">
+                                        <td className="border text-black text-md font-semibold border-gray-500 px-4 py-2">
                                             {item.name}
                                         </td>
-                                        <td className="border text-black text-sm text-md border-gray-500 px-4 py-2">
+                                        <td className="border text-black text-md font-semibold border-gray-500 px-4 py-2">
                                             {item.mobile_no}
                                         </td>
-                                        <td className="border text-black text-sm text-md border-gray-500 px-4 py-2">
+                                        <td className="border text-black text-md font-semibold border-gray-500 px-4 py-2">
                                             {item.parent_mobile_no}
                                         </td>
-                                        <td className="border text-black text-sm text-md border-gray-500 px-4 py-2">
+                                        <td className="border text-black text-md font-semibold border-gray-500 px-4 py-2">
                                             {item.room_no}
                                         </td>
-                                        <td className="border text-black text-sm text-md border-gray-500 px-4 py-2">
+                                        <td className="border text-black text-md font-semibold border-gray-500 px-4 py-2">
                                             {item.checkin_days}
                                         </td>
-                                        <td className="border text-black text-sm text-md border-gray-500 px-4 py-2">
+                                        <td className="border text-black text-md font-semibold border-gray-500 px-4 py-2">
                                             ₹{item.payable_rent}
                                         </td>
-                                        <td className="border text-black text-sm text-md border-gray-500 px-4 py-2">
+                                        <td className="border text-black text-md font-semibold border-gray-500 px-4 py-2">
                                             {
                                                 item.checkin_time ?
                                                 formatTimestamp(parseInt(item.checkin_time))

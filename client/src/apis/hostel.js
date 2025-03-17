@@ -2,9 +2,31 @@ import { HostelApi } from "../constant/constant";
 
 ////////////////////////////////////////////////////////// AUTH //////////////////////////////////////////////////////////
 
+export const HostelRegisterApi = async (form_data) => {
+    try {
+        const { data } = await HostelApi.post('/register', form_data)
+        return data;
+    } catch (error) {
+        return false
+    }
+}
+
+//////////////////////////////////////////////////////////
+
 export const HostelLoginApi = async (form_data) => {
     try {
         const { data } = await HostelApi.post('/login', form_data)
+        return data;
+    } catch (error) {
+        return false
+    }
+}
+
+//////////////////////////////////////////////////////////
+
+export const HostelForgotPasswordApi = async (form_data) => {
+    try {
+        const { data } = await HostelApi.post('/forgot-password', form_data)
         return data;
     } catch (error) {
         return false

@@ -37,9 +37,9 @@ const HostelDashboardPage = () => {
         <>
             <NavbarComponent now={'dashboard'} />
             <SidebarComponent now={'dashboard'} />
-            <div className="w-auto min-h-screen px-3 pt-16 md:ml-60 lg:ml-80 bg-gray-400">
-                <div className="w-full min-h-screen px-5 py-5 mt-3">
-                    <h1 className="">Dashboard</h1>
+            <div className="w-auto min-h-screen px-3 pt-16 md:ml-60 lg:ml-80 bg-[#1B263B]">
+                <div className="w-full min-h-screen rounded-lg px-5 py-5 mt-3 bg-[#7b8794]">
+                    <h1 className="font-extrabold text-center mt-60 text-xl">Dashboard</h1>
                 </div>
             </div>
         </>

@@ -11,6 +11,13 @@ import HostelCheckinPage from "./pages/hostel/Checkin";
 import HostelMenusPage from "./pages/hostel/Menus";
 import LoginPage from "./pages/student-parent/Login";
 import HomePage from "./pages/student-parent/Home";
+import RoomsPage from "./pages/student-parent/Rooms";
+import MenusPage from "./pages/student-parent/Menus";
+import ComplaintsPage from "./pages/student-parent/Complaints";
+import HostelLandingPage from "./pages/hostel/Landing";
+import HostelRegisterPage from "./pages/hostel/Register";
+import HostelForgotPasswordPage from "./pages/hostel/ForgotPassword";
+import AttendancePage from "./pages/student-parent/Attendance";
 
 function App() {
   return (
@@ -18,7 +25,10 @@ function App() {
       <Routes>
         <Route path="/" element={<LandingPage />} />
         {/* hostel */}
+        <Route path="/hostel/landing" element={<HostelLandingPage />} />
+        <Route path="/hostel/register" element={<HostelRegisterPage />} />
         <Route path="/hostel/login" element={<HostelLoginPage />} />
+        <Route path="/hostel/forgot-password" element={<HostelForgotPasswordPage />} />
         <Route path="/hostel/dashboard" element={<HostelDashboardPage />} />
         <Route path="/hostel/rooms" element={<HostelRoomsPage />} />
         <Route path="/hostel/students" element={<HostelStudentsPage />} />
@@ -29,6 +39,10 @@ function App() {
         {/* student-parent */}
         <Route path="/login" element={<LoginPage />} />
         <Route path="/home" element={<HomePage />} />
+        <Route path="/rooms" element={<RoomsPage />} />
+        <Route path="/menus" element={<MenusPage />} />
+        <Route path="/complaints" element={<ComplaintsPage />} />
+        <Route path="/attendance" element={<AttendancePage />} />
       </Routes>
     </BrowserRouter>
   );

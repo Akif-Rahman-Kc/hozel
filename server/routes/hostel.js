@@ -2,7 +2,7 @@ import { Router } from 'express';
 const router = Router();
 import multer from 'multer'
 import { hostelJWT } from '../middleware/auth.js';
-import { hostelAuth, hostelLogin } from '../controller/auth.js';
+import { hostelAuth, hostelForgotPassword, hostelLogin, hostelRegister } from '../controller/auth.js';
 import { createStudent, deleteStudent, listStudent, updateStudent, updateStudentStatus } from '../controller/student.js';
 import { createRoom, deleteRoom, detailsRoom, listRoom, updateRoom, updateRoomStatus } from '../controller/room.js';
 import { listParent } from '../controller/parent.js';
@@ -25,7 +25,9 @@ const uploads = multer({ storage, fileFilter });
 //////////////////////////////////////////
 
 // Authentication
+router.post('/register', hostelRegister)
 router.post('/login', hostelLogin)
+router.post('/forgot-password', hostelForgotPassword)
 router.post('/auth', hostelJWT, hostelAuth)
 
 // Student

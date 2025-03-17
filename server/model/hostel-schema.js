@@ -1,6 +1,31 @@
 import { Schema, model } from 'mongoose';
 
 const hostelSchema = new Schema({
+    warden_name:{
+        type:String,
+        required:true,
+        trim:true
+    },
+    address:{
+        type: String,
+        required: true,
+        trim: true
+    },
+    hostel_name:{
+        type:String,
+        required:true,
+        trim:true
+    },
+    college_name:{
+        type: String,
+        required: true,
+        trim: true
+    },
+    warden_mobile_no:{
+        type: String,
+        required: true,
+        trim: true
+    },
     username:{
         type:String,
         required:true,
@@ -15,7 +40,8 @@ const hostelSchema = new Schema({
     created_at:{
         required: true,
         type: Number,
-        trim: true
+        trim: true,
+        default: Date.now()
     },
 })
 

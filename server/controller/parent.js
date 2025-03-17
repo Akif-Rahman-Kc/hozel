@@ -5,7 +5,8 @@ import Student from "../model/student-schema.js";
 
 export async function listParent(req, res) {
     try {
-        const parents = await Parent.find().sort({ created_at: -1 })
+        const hostel_id = req.hostelId ? req.hostelId : req.query.hostel_id
+        const parents = await Parent.find({hostel_id: hostel_id}).sort({ created_at: -1 })
         let all_parents = []
         for (const parent of parents) {
             const student = await Student.findOne({ student_id: parent.username })

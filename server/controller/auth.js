@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken'
 import Student from "../model/student-schema.js";
 import Hostel from "../model/hostel-schema.js";
 import Parent from "../model/parent-schema.js";
+import Menu from "../model/menu-schema.js";
 
 //////////////////////////////////////////////////////  STUDENT  //////////////////////////////////////////////////////
 
@@ -80,8 +81,9 @@ export async function parentLogin(req, res) {
 export async function parentAuth(req, res) {
     try {
         const parent_details = await Parent.findById(req.parentId)
+        const student = await Student.findOne({ hostel_id: parent_details.hostel_id, student_id: parent_details.username })
         if (parent_details) {
-            res.json({ status: "success", auth: true })
+            res.json({ status: "success", auth: true, parent_details: parent_details, student: student })
         } else {
             res.json({ status: "success", auth: false })
         }
@@ -91,6 +93,153 @@ export async function parentAuth(req, res) {
 }
 
 //////////////////////////////////////////////////////  HOSTEL  //////////////////////////////////////////////////////
+
+export async function hostelRegister(req, res) {
+    try {
+        const { warden_name, address, hostel_name, college_name, warden_mobile_no, username, password } = req.body
+        const hostel = await Hostel.findOne({ username: username })
+        if (hostel) {
+            res.json({ status: "failed", message: "Already exist this username" })
+        } else {
+            const twentyFourHoursInSeconds = 24 * 60 * 60; // 24 Hours in seconds
+            const pwd = await hash(password, 10)
+            await Hostel.create({ warden_name, address, hostel_name, college_name, warden_mobile_no, username, password: pwd })
+            const hostel = await Hostel.findOne({ username: username })
+            const hostelId = hostel._id
+            const token = jwt.sign({ hostelId }, process.env.JWT_SECRET_KEY, { expiresIn: twentyFourHoursInSeconds })
+            ////// menus added for 7 days with null
+            const datas = [
+                {
+                    "day":"Sunday",
+                    "items":[
+                        {
+                            "type":"Breakfast",
+                            "dishes":""
+                        },
+                        {
+                            "type":"Lunch",
+                            "dishes":""
+                        },
+                        {
+                            "type":"Dinner",
+                            "dishes":""
+                        }
+                    ]
+                },
+                {
+                    "day":"Monday",
+                    "items":[
+                        {
+                            "type":"Breakfast",
+                            "dishes":""
+                        },
+                        {
+                            "type":"Lunch",
+                            "dishes":""
+                        },
+                        {
+                            "type":"Dinner",
+                            "dishes":""
+                        }
+                    ]
+                },
+                {
+                    "day":"Tuesday",
+                    "items":[
+                        {
+                            "type":"Breakfast",
+                            "dishes":""
+                        },
+                        {
+                            "type":"Lunch",
+                            "dishes":""
+                        },
+                        {
+                            "type":"Dinner",
+                            "dishes":""
+                        }
+                    ]
+                },
+                {
+                    "day":"Wednesday",
+                    "items":[
+                        {
+                            "type":"Breakfast",
+                            "dishes":""
+                        },
+                        {
+                            "type":"Lunch",
+                            "dishes":""
+                        },
+                        {
+                            "type":"Dinner",
+                            "dishes":""
+                        }
+                    ]
+                },
+                {
+                    "day":"Thursday",
+                    "items":[
+                        {
+                            "type":"Breakfast",
+                            "dishes":""
+                        },
+                        {
+                            "type":"Lunch",
+                            "dishes":""
+                        },
+                        {
+                            "type":"Dinner",
+                            "dishes":""
+                        }
+                    ]
+                },
+                {
+                    "day":"Friday",
+                    "items":[
+                        {
+                            "type":"Breakfast",
+                            "dishes":""
+                        },
+                        {
+                            "type":"Lunch",
+                            "dishes":""
+                        },
+                        {
+                            "type":"Dinner",
+                            "dishes":""
+                        }
+                    ]
+                },
+                {
+                    "day":"Saturday",
+                    "items":[
+                        {
+                            "type":"Breakfast",
+                            "dishes":""
+                        },
+                        {
+                            "type":"Lunch",
+                            "dishes":""
+                        },
+                        {
+                            "type":"Dinner",
+                            "dishes":""
+                        }
+                    ]
+                }
+            ]
+            for (const data of datas) {
+                await Menu.create({hostel_id: hostelId, day: data.day, items: data.items});
+            }
+            //////
+            res.json({ status: "success", auth: true, token: token })
+        }
+    } catch (error) {
+        console.log(error);
+        res.json({ status: "failed", message: "Network error" })
+    }
+}
 
 export async function hostelLogin(req, res) {
     try {
@@ -110,6 +259,26 @@ export async function hostelLogin(req, res) {
             } else {
                 res.json({ status: "failed", auth: false, type: "password", message: "Your password is incorrect" })
             }
+        } else {
+            res.json({ status: "failed", auth: false, type: "username", message: "Your username is incorrect" })
+        }
+    } catch (error) {
+        res.json({ status: "failed", message: "Network error" })
+    }
+}
+
+export async function hostelForgotPassword(req, res) {
+    try {
+        const { username, new_password } = req.body
+        const hostel = await Hostel.findOne({ username: username })
+        if (hostel) {
+            const password = await hash(new_password, 10)
+            await Hostel.updateOne({ _id: hostel._id }, {
+                $set: {
+                    password: password
+                }
+            })
+            res.json({ status: "success" })
         } else {
             res.json({ status: "failed", auth: false, type: "username", message: "Your username is incorrect" })
         }

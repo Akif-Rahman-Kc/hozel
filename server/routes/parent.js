@@ -4,6 +4,9 @@ import multer from 'multer'
 import { parentJWT } from '../middleware/auth.js';
 import { parentAuth, parentLogin } from '../controller/auth.js';
 import { listRoom } from '../controller/room.js';
+import { listMenu } from '../controller/menu.js';
+import { listComplaint } from '../controller/complaint.js';
+import { getMonthCheckins, getYearCheckins } from '../controller/checkin.js';
 
 ///////////////// Multer /////////////////
 const storage = multer.diskStorage({});
@@ -23,7 +26,17 @@ const uploads = multer({ storage, fileFilter });
 router.post('/login', parentLogin)
 router.post('/auth', parentJWT, parentAuth)
 
-// Menu
+// Room
 router.get('/room/list', parentJWT, listRoom)
+
+// Menu
+router.get('/menu/list', parentJWT, listMenu)
+
+// Complaint
+router.get('/complaint/list', parentJWT, listComplaint)
+
+// Checkin
+router.get('/checkin/month-list', parentJWT, getMonthCheckins)
+router.get('/checkin/year-list', parentJWT, getYearCheckins)
 
 export default router;

@@ -16,7 +16,6 @@ const HostelRoomsPage = () => {
     const admin = localStorage.getItem("admin")
 
     // states
-    // states
     const [refresh, setRefresh] = useState(false)
     const [roomRefresh, setRoomRefresh] = useState(false)
     const [selectedValue, setSelectedValue] = useState("");
@@ -275,8 +274,8 @@ const HostelRoomsPage = () => {
         <>
             <NavbarComponent now={'rooms'} />
             <SidebarComponent now={'rooms'} />
-            <div className="w-auto min-h-screen px-3 pt-16 md:ml-60 lg:ml-80 bg-gray-400">
-                <div className="w-full min-h-screen px-5 py-5  mt-3">
+            <div className="w-auto min-h-screen px-3 pt-16 md:ml-60 lg:ml-80 bg-[#1B263B]">
+                <div className="w-full min-h-screen rounded-lg px-5 py-5 mt-3 bg-[#7b8794]">
                     {/* Filters */}
                     <div className="mb-3 flex w-full items-center">
                         {/* Search Bar Start */}
@@ -285,7 +284,7 @@ const HostelRoomsPage = () => {
                                 type="text"
                                 id="search"
                                 placeholder="Search..."
-                                className="flex px-4 w-7/12 lg:w-4/12 py-1 bg-gray-200 border border-gray-800 rounded-md text-black text-xs lg:text-sm"
+                                className="flex px-4 w-7/12 lg:w-4/12 py-1 bg-gray-200 border border-gray-800 rounded-lg text-black text-xs lg:text-sm"
                                 // value={search}
                                 onChange={(e) => search(e.target.value)}
                             />
@@ -299,41 +298,41 @@ const HostelRoomsPage = () => {
                     </div>
                     {/* Add Room Start */}
                     <div className="w-full flex justify-center">
-                        <button onClick={addModalOpen} className="w-full mb-2 text-white py-2 text-xxs font-extrabold uppercase rounded bg-green-700 hover:bg-green-800">
+                        <button onClick={addModalOpen} className="w-full mb-2 text-white py-2 text-xxs font-extrabold uppercase rounded-lg bg-green-800 hover:bg-green-900">
                             Add Room
                         </button>
                     </div>
                     {/* Add Room End */}
                     {/* Table */}
-                    <div className="w-full bg-gray-300 overflow-x-auto rounded-md">
+                    <div className="w-full bg-gray-300 overflow-x-auto rounded-xl">
                         <table className="w-full table-auto border-collapse border border-gray-900">
                             <thead>
                                 <tr>
-                                    <th className="text-md text-white border border-gray-500 px-4 py-2 bg-gray-600 capitalize">
+                                    <th className="text-md text-white border border-gray-500 px-4 py-2 bg-[#1B263B] capitalize">
                                         Image
                                     </th>
-                                    <th className="text-md text-white border border-gray-500 px-4 py-2 bg-gray-600 capitalize">
+                                    <th className="text-md text-white border border-gray-500 px-4 py-2 bg-[#1B263B] capitalize">
                                         Room No
                                     </th>
-                                    <th className="text-md text-white border border-gray-500 px-4 py-2 bg-gray-600 capitalize">
+                                    <th className="text-md text-white border border-gray-500 px-4 py-2 bg-[#1B263B] capitalize">
                                         Room Type
                                     </th>
-                                    <th className="text-md text-white border border-gray-500 px-4 py-2 bg-gray-600 capitalize">
+                                    <th className="text-md text-white border border-gray-500 px-4 py-2 bg-[#1B263B] capitalize">
                                         Capacity
                                     </th>
-                                    <th className="text-md text-white border border-gray-500 px-4 py-2 bg-gray-600 capitalize">
+                                    <th className="text-md text-white border border-gray-500 px-4 py-2 bg-[#1B263B] capitalize">
                                         Facilities
                                     </th>
-                                    <th className="text-md text-white border border-gray-500 px-4 py-2 bg-gray-600 capitalize">
+                                    <th className="text-md text-white border border-gray-500 px-4 py-2 bg-[#1B263B] capitalize">
                                         Price
                                     </th>
-                                    <th className="text-md text-white border border-gray-500 px-4 py-2 bg-gray-600 capitalize">
+                                    <th className="text-md text-white border border-gray-500 px-4 py-2 bg-[#1B263B] capitalize">
                                         Availability
                                     </th>
-                                    <th className="text-md text-white border border-gray-500 px-4 py-2 bg-gray-600 capitalize">
+                                    <th className="text-md text-white border border-gray-500 px-4 py-2 bg-[#1B263B] capitalize">
                                         Status
                                     </th>
-                                    <th className="text-md text-white border border-gray-500 px-4 py-2 bg-gray-600 capitalize">
+                                    <th className="text-md text-white border border-gray-500 px-4 py-2 bg-[#1B263B] capitalize">
                                         Options
                                     </th>
                                 </tr>
@@ -341,25 +340,25 @@ const HostelRoomsPage = () => {
                             <tbody>
                                 {rooms.map((item, index) => (
                                     <tr key={index}>
-                                        <td className="border text-black text-sm border-gray-500 px-4 py-2">
+                                        <td className="border text-black text-md font-semibold border-gray-500 px-4 py-2">
                                             <img src={item.image.path} alt="Example" className="rounded-md shadow-lg h-9" />
                                         </td>
-                                        <td className="border text-black text-sm border-gray-500 px-4 py-2">
+                                        <td className="border text-black text-md font-semibold border-gray-500 px-4 py-2">
                                             {item.room_no}
                                         </td>
-                                        <td className="border text-black text-sm border-gray-500 px-4 py-2">
+                                        <td className="border text-black text-md font-semibold border-gray-500 px-4 py-2">
                                             {item.room_type}
                                         </td>
-                                        <td className="border text-black text-sm border-gray-500 px-4 py-2">
+                                        <td className="border text-black text-md font-semibold border-gray-500 px-4 py-2">
                                             {item.capacity}
                                         </td>
-                                        <td className="border text-black text-sm border-gray-500 px-4 py-2">
+                                        <td className="border text-black text-md font-semibold border-gray-500 px-4 py-2">
                                             {item.facilities.join(", ")}
                                         </td>
-                                        <td className="border text-black text-sm border-gray-500 px-4 py-2">
+                                        <td className="border text-black text-md font-semibold border-gray-500 px-4 py-2">
                                             ₹{item.price}
                                         </td>
-                                        <td className="border text-black text-sm border-gray-500 px-4 py-2">
+                                        <td className="border text-black text-md font-semibold border-gray-500 px-4 py-2">
                                             {item.availability}
                                         </td>
                                         <td className="border text-black text-xs border-gray-500 px-4 py-2">
@@ -392,8 +391,8 @@ const HostelRoomsPage = () => {
                     {/* Table */}
                     {/* Add Modal Start */}
                     {isAddModalOpen && (
-                        <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 mt-3">
-                            <div className="bg-gray-700 px-6 py-3 rounded-lg shadow-lg w-96 relative max-h-[80vh] overflow-y-auto custom-scrollbar">
+                        <div className="fixed inset-0 flex items-center justify-center bg-[#1B263B] bg-opacity-50 mt-3">
+                            <div className="bg-[#1B263B] px-6 py-3 rounded-lg shadow-lg w-96 relative max-h-[72vh] overflow-y-auto custom-scrollbar">
                                 {/* close button */}
                                 <button
                                     className="absolute top-4 right-4 text-gray-300 hover:text-gray-500"
@@ -537,8 +536,8 @@ const HostelRoomsPage = () => {
                     {/* Add Modal End */}
                     {/* Edit Modal Start */}
                     {isEditModalOpen && (
-                        <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 mt-3">
-                            <div className="bg-gray-700 p-6 rounded-lg shadow-lg w-96 relative max-h-[80vh] overflow-y-auto custom-scrollbar">
+                        <div className="fixed inset-0 flex items-center justify-center bg-[#1B263B] bg-opacity-50 mt-3">
+                            <div className="bg-[#1B263B] p-6 rounded-lg shadow-lg w-96 relative max-h-[72vh] overflow-y-auto custom-scrollbar">
                                 {/* close button */}
                                 <button
                                     className="absolute top-4 right-4 text-gray-300 hover:text-gray-500"
@@ -686,8 +685,8 @@ const HostelRoomsPage = () => {
                     {/* Edit Modal End */}
                     {/* Delete Modal Start */}
                     {isDeleteModalOpen && (
-                        <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center">
-                            <div className="bg-gray-700 p-6 rounded shadow-lg w-96 relative">
+                        <div className="fixed inset-0 bg-[#1B263B] bg-opacity-50 flex justify-center items-center">
+                            <div className="bg-[#1B263B] p-6 rounded shadow-lg w-96 relative">
                                 {/* close button */}
                                 <button
                                     className="absolute top-4 right-4 text-gray-300 hover:text-gray-500"

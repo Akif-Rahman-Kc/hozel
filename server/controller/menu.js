@@ -14,7 +14,8 @@ import Menu from "../model/menu-schema.js";
 
 export async function listMenu(req, res) {
     try {
-        const menus = await Menu.find().sort({ created_at: -1 })
+        const hostel_id = req.hostelId ? req.hostelId : req.query.hostel_id
+        const menus = await Menu.find({ hostel_id: hostel_id }).sort({ created_at: -1 })
         res.json({ status: "success", menus })
     } catch (error) {
         res.json({ status: "failed", message: "Network error" })

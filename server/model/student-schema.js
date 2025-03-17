@@ -1,6 +1,16 @@
 import { Schema, model } from 'mongoose';
 
 const studentSchema = new Schema({
+    hostel_id:{
+        type:String,
+        required:true,
+        trim:true
+    },
+    hostel_mobile_no:{
+        type:String,
+        required:true,
+        trim:true
+    },
     student_id:{
         type:String,
         required:true,
@@ -18,6 +28,11 @@ const studentSchema = new Schema({
         trim:true
     },
     parent_mobile_no:{
+        type: String,
+        required: true,
+        trim: true
+    },
+    address:{
         type: String,
         required: true,
         trim: true
@@ -48,6 +63,16 @@ const studentSchema = new Schema({
         trim: true
     },
     room_no:{
+        type: String,
+        required: true,
+        trim: true,
+    },
+    college:{
+        type: String,
+        required: true,
+        trim: true,
+    },
+    facalty_id:{
         type: String,
         required: true,
         trim: true,

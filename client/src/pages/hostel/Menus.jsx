@@ -145,8 +145,8 @@ const HostelMenusPage = () => {
         <>
             <NavbarComponent now={'menus'} />
             <SidebarComponent now={'menus'} />
-            <div className="w-auto min-h-screen px-3 pt-16 md:ml-60 lg:ml-80 bg-gray-400">
-                <div className="w-full min-h-screen px-5 py-5 mt-3">
+            <div className="w-auto min-h-screen px-3 pt-16 md:ml-60 lg:ml-80 bg-[#1B263B]">
+                <div className="w-full min-h-screen rounded-lg px-5 py-5 mt-3 bg-[#7b8794]">
                     {/* Filters */}
                     <div className="mb-3 flex w-full items-center relative">
                         {/* Search Bar Start */}
@@ -155,7 +155,7 @@ const HostelMenusPage = () => {
                                 type="text"
                                 id="search"
                                 placeholder="Search..."
-                                className="flex px-4 w-7/12 lg:w-4/12 py-1 bg-gray-200 border border-gray-800 rounded-md text-black text-xs lg:text-sm"
+                                className="flex px-4 w-7/12 lg:w-4/12 py-1 bg-gray-200 border border-gray-800 rounded-lg text-black text-xs lg:text-sm"
                                 // value={search}
                                 onChange={(e) => search(e.target.value)}
                             />
@@ -164,23 +164,23 @@ const HostelMenusPage = () => {
                         <div className="w-1/2 flex justify-end"></div>
                     </div>
                     {/* Table Start */}
-                    <div className="w-full bg-gray-300 overflow-x-auto rounded-md">
+                    <div className="w-full bg-gray-300 overflow-x-auto rounded-xl">
                         <table className="w-full table-auto border-collapse border border-gray-900">
                             <thead>
                                 <tr>
-                                    <th className="text-md text-white border border-gray-500 px-4 py-2 bg-gray-600 capitalize">
+                                    <th className="text-md text-white border border-gray-500 px-4 py-2 bg-[#1B263B] capitalize">
                                         Day
                                     </th>
-                                    <th className="text-md text-white border border-gray-500 px-4 py-2 bg-gray-600 capitalize">
+                                    <th className="text-md text-white border border-gray-500 px-4 py-2 bg-[#1B263B] capitalize">
                                         Breakfast
                                     </th>
-                                    <th className="text-md text-white border border-gray-500 px-4 py-2 bg-gray-600 capitalize">
+                                    <th className="text-md text-white border border-gray-500 px-4 py-2 bg-[#1B263B] capitalize">
                                         Lunch
                                     </th>
-                                    <th className="text-md text-white border border-gray-500 px-4 py-2 bg-gray-600 capitalize">
+                                    <th className="text-md text-white border border-gray-500 px-4 py-2 bg-[#1B263B] capitalize">
                                         Dinner
                                     </th>
-                                    <th className="text-md text-white border border-gray-500 px-4 py-2 bg-gray-600 capitalize">
+                                    <th className="text-md text-white border border-gray-500 px-4 py-2 bg-[#1B263B] capitalize">
                                         Options
                                     </th>
                                 </tr>
@@ -188,16 +188,16 @@ const HostelMenusPage = () => {
                             <tbody>
                                 {menus.map((item, index) => (
                                     <tr key={index}>
-                                        <td className="border text-sm text-black text-md border-gray-500 px-4 py-2 capitalize">
+                                        <td className="border text-black text-md font-semibold border-gray-500 px-4 py-2 capitalize">
                                             {item.day}
                                         </td>
-                                        <td className="border text-sm text-black text-md border-gray-500 px-4 py-2 capitalize">
+                                        <td className="border text-black text-md font-semibold border-gray-500 px-4 py-2 capitalize">
                                             {item?.items[0]?.dishes}
                                         </td>
-                                        <td className="border text-sm text-black text-md border-gray-500 px-4 py-2">
+                                        <td className="border text-black text-md font-semibold border-gray-500 px-4 py-2">
                                             {item?.items[1]?.dishes}
                                         </td>
-                                        <td className="border text-sm text-black text-md border-gray-500 px-4 py-2">
+                                        <td className="border text-black text-md font-semibold border-gray-500 px-4 py-2">
                                             {item?.items[2]?.dishes}
                                         </td>
                                         <td className="border text-xs border-gray-500 w-1/12 px-4 py-2">
@@ -213,8 +213,8 @@ const HostelMenusPage = () => {
                     {/* Table End */}
                     {/* Edit Modal Start */}
                     {isEditModalOpen && (
-                        <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
-                            <div className="bg-gray-700 p-6 rounded-lg shadow-lg w-96 relative">
+                        <div className="fixed inset-0 flex items-center justify-center bg-[#1B263B] bg-opacity-50">
+                            <div className="bg-[#1B263B] p-6 rounded-lg shadow-lg w-96 relative">
                                 {/* close button */}
                                 <button
                                     className="absolute top-4 right-4 text-gray-300 hover:text-gray-500"

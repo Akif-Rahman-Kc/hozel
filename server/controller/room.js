@@ -1,4 +1,5 @@
 import Room from "../model/room-schema.js";
+import Student from "../model/student-schema.js";
 import {v2 as cloudinary} from 'cloudinary';
 
 //////////////////////////////////////////////////////  ROOM  //////////////////////////////////////////////////////
@@ -19,7 +20,7 @@ export async function createRoom(req, res) {
                         public_id: result.public_id,
                         path: result.secure_url,
                     };
-                    await Room.create({image, room_no, room_type, capacity, facilities: facilities.split(","), price, availability: capacity});
+                    await Room.create({hostel_id: req.hostelId, image, room_no, room_type, capacity, facilities: facilities.split(","), price, availability: capacity});
                     res.json({ status: "success" });
                 } else {
                     res.json({
@@ -52,7 +53,8 @@ export async function detailsRoom(req, res) {
 
 export async function listRoom(req, res) {
     try {
-        const rooms = await Room.find().sort({ created_at: -1 })
+        const hostel_id = req.hostelId ? req.hostelId : req.query.hostel_id
+        const rooms = await Room.find({hostel_id: hostel_id}).sort({ created_at: -1 })
         res.json({ status: "success", rooms })
     } catch (error) {
         res.json({ status: "failed", message: "Network error" })
@@ -122,18 +124,23 @@ export async function deleteRoom(req, res) {
     try {
         const room = await Room.findById(req.query._id)
         if (room) {
-            cloudinary.config({
-                cloud_name: process.env.CLOUD_NAME, 
-                api_key: process.env.CLOUD_KEY, 
-                api_secret: process.env.CLOUD_SECRET
-            });
-            const result = await cloudinary.api.delete_resources([room.image.public_id], { type: 'upload', resource_type: 'image' })
-            const deleted = Object.keys(result.deleted)[0]
-            if (result.deleted[deleted] == 'deleted') {
-                await Room.deleteOne({ _id: req.query._id })
-                res.json({ status: "success" })
-            }else{
-                res.json({status:"failed", message:"File not deleted"})
+            const student = await Student.findOne({ hostel_id: req.hostelId, room_no: room?.room_no })
+            if (student) {
+                res.json({ status: "failed", message: "This room already have students, you cant delete" })
+            } else {
+                cloudinary.config({
+                    cloud_name: process.env.CLOUD_NAME, 
+                    api_key: process.env.CLOUD_KEY, 
+                    api_secret: process.env.CLOUD_SECRET
+                });
+                const result = await cloudinary.api.delete_resources([room.image.public_id], { type: 'upload', resource_type: 'image' })
+                const deleted = Object.keys(result.deleted)[0]
+                if (result.deleted[deleted] == 'deleted') {
+                    await Room.deleteOne({ _id: req.query._id })
+                    res.json({ status: "success" })
+                }else{
+                    res.json({status:"failed", message:"File not deleted"})
+                }
             }
         } else {
             res.json({ status: "failed", message: "This room not exist" })

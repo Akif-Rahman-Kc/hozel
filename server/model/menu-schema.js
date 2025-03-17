@@ -1,6 +1,11 @@
 import { Schema, model } from 'mongoose';
 
 const menuSchema = new Schema({
+    hostel_id:{
+        type: String,
+        required: true,
+        trim: true
+    },
     day:{
         type: String,
         required: true,
@@ -14,7 +19,6 @@ const menuSchema = new Schema({
         },
         dishes:{
             type:String,
-            required: true,
             trim: true
         }
     }],

@@ -1,6 +1,11 @@
 import { Schema, model } from 'mongoose';
 
 const roomSchema = new Schema({
+    hostel_id:{
+        type:String,
+        required:true,
+        trim:true
+    },
     room_no:{
         type:String,
         required:true,

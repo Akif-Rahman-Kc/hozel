@@ -1,14 +1,15 @@
 import Student from "../model/student-schema.js";
 import Room from "../model/room-schema.js";
 import Parent from "../model/parent-schema.js";
+import Hostel from "../model/hostel-schema.js";
 import { compare, hash } from "bcrypt";
 
 //////////////////////////////////////////////////////  STUDENT  //////////////////////////////////////////////////////
 
 export async function createStudent(req, res) {
     try {
-        const { student_id, name, mobile_no, parent_mobile_no, room_no, age, gender, year, department, password } = req.body
-        if (student_id != "" && name != "" && mobile_no != "" && parent_mobile_no != "" && room_no != "" && age != "" && gender != "" && year != "" && department != "" && password != "") {
+        const { student_id, name, mobile_no, parent_mobile_no, address, room_no, age, gender, year, department, college, facalty_id, password } = req.body
+        if (student_id != "" && name != "" && mobile_no != "" && parent_mobile_no != "" && address != "" && room_no != "" && age != "" && gender != "" && year != "" && department != "" && college != "" && facalty_id != "" && password != "") {
             // validation
             if (password.length < 8) {
                 res.json({ status: "failed", message: "Password minimum 8 characters" })
@@ -19,28 +20,31 @@ export async function createStudent(req, res) {
                 return "okay"
             }
             // room available or not checking
-            const room = await Room.findOne({ room_no: room_no })
+            const room = await Room.findOne({ hostel_id: req.hostelId, room_no: room_no })
             if (!room?.availability) {
                 res.json({ status: "failed", message: "Room not available" })
             } else {
                 // student add
                 const exist_student = await Student.findOne({ student_id: student_id })
                 if (exist_student) {
-                    res.json({ status: "failed", message: "This student_id already registered, please try login" })
+                    res.json({ status: "failed", message: "This student_id already added, please try login" })
                 } else {
+                    const hostel = await Hostel.findById(req.hostelId)
                     const pwd = await hash(password, 10)
-                    await Student.create({ student_id, name, mobile_no, parent_mobile_no, room_no, age, gender, year, department, password: pwd })
+                    await Student.create({ hostel_id: req.hostelId, hostel_mobile_no: hostel.warden_mobile_no, student_id, name, mobile_no, parent_mobile_no, address, room_no, age, gender, year, department, college, facalty_id, password: pwd })
                     const student = await Student.findOne({ student_id: student_id })
                     // room availability reducing
+                    room.occupants.push({student_id, student_name: name, department})
                     await Room.updateOne({ _id: room._id }, {
                         $set: {
-                            availability: room.availability - 1
+                            availability: room.availability - 1,
+                            occupants: room.occupants
                         }
                     })
                     // parent add
                     if (student) {
                         req.body.password = await hash(password, 10)
-                        await Parent.create({username: student_id, password: pwd})
+                        await Parent.create({hostel_id:req.hostelId, username: student_id, password: pwd})
                     }
                     res.json({ status: "success" })
                 }
@@ -65,7 +69,8 @@ export async function createStudent(req, res) {
 
 export async function listStudent(req, res) {
     try {
-        const students = await Student.find().sort({ created_at: -1 })
+        const hostel_id = req.hostelId ? req.hostelId : req.query.hostel_id
+        const students = await Student.find({hostel_id: hostel_id}).sort({ created_at: -1 })
         res.json({ status: "success", students })
     } catch (error) {
         res.json({ status: "failed", message: "Network error" })
@@ -127,11 +132,13 @@ export async function deleteStudent(req, res) {
             // remove parent also
             await Parent.deleteOne({ username: student.student_id })
             // room availability adding
-            const room = await Room.findOne({ room_no: student?.room_no })
+            const room = await Room.findOne({ hostel_id: req.hostelId, room_no: student?.room_no })
             if (room) {
+                const occupants = room?.occupants?.filter(item => item.student_id !== student.student_id);
                 await Room.updateOne({ _id: room._id }, {
                     $set: {
-                        availability: room.availability + 1
+                        availability: room.availability + 1,
+                        occupants: occupants
                     }
                 })
             }
