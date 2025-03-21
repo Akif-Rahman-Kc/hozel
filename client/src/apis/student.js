@@ -13,6 +13,17 @@ export const StudentLoginApi = async (form_data) => {
 
 //////////////////////////////////////////////////////////
 
+export const StudentForgotPasswordApi = async (form_data) => {
+    try {
+        const { data } = await StudentApi.post('/forgot-password', form_data)
+        return data;
+    } catch (error) {
+        return false
+    }
+}
+
+//////////////////////////////////////////////////////////
+
 export const StudentAuthApi = async (token) => {
     try {
         const { data } = await StudentApi.post('/auth', {}, { headers: { "studenttoken": token } })
@@ -22,7 +33,40 @@ export const StudentAuthApi = async (token) => {
     }
 }
 
+////////////////////////////////////////////////////////// STUDENT //////////////////////////////////////////////////////////
+
+export const StudentProfileUpdate = async (token, form_data) => {
+    try {
+        const { data } = await StudentApi.patch('/student/update-profile', form_data, { headers: { "studenttoken": token } })
+        return data;
+    } catch (error) {
+        return false
+    }
+}
+
+//////////////////////////////////////////////////////////
+
+export const StudentChangePasswordApi = async (token, form_data) => {
+    try {
+        const { data } = await StudentApi.patch('/student/change-password', form_data, { headers: { "studenttoken": token } })
+        return data;
+    } catch (error) {
+        return false
+    }
+}
+
 ////////////////////////////////////////////////////////// ROOM //////////////////////////////////////////////////////////
+
+export const StudentRoomDetails = async (token, hostel_id, room_no) => {
+    try {
+        const { data } = await StudentApi.get(`/room/details?hostel_id=${hostel_id}&room_no=${room_no}`, { headers: { "studenttoken": token } })
+        return data;
+    } catch (error) {
+        return false
+    }
+}
+
+//////////////////////////////////////////////////////////
 
 export const StudentRoomList = async (token, hostel_id) => {
     try {

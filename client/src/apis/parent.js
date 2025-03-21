@@ -24,6 +24,17 @@ export const ParentAuthApi = async (token) => {
 
 ////////////////////////////////////////////////////////// ROOM //////////////////////////////////////////////////////////
 
+export const ParentRoomDetails = async (token, hostel_id, room_no) => {
+    try {
+        const { data } = await ParentApi.get(`/room/details?hostel_id=${hostel_id}&room_no=${room_no}`, { headers: { "parenttoken": token } })
+        return data;
+    } catch (error) {
+        return false
+    }
+}
+
+//////////////////////////////////////////////////////////
+
 export const ParentRoomList = async (token, hostel_id) => {
     try {
         const { data } = await ParentApi.get(`/room/list?hostel_id=${hostel_id}`, { headers: { "parenttoken": token } })

@@ -9,6 +9,7 @@ import { listParent } from '../controller/parent.js';
 import { listComplaint, updateComplaintStatus } from '../controller/complaint.js';
 import { createCheckin, listCheckin } from '../controller/checkin.js';
 import { listMenu, updateMenu } from '../controller/menu.js';
+import { studentReports } from '../controller/reports.js';
 
 ///////////////// Multer /////////////////
 const storage = multer.diskStorage({});
@@ -60,5 +61,8 @@ router.patch('/menu/update', hostelJWT, updateMenu)
 // Checkin
 router.post('/checkin/create', hostelJWT, createCheckin)
 router.get('/checkin/list', hostelJWT, listCheckin)
+
+// Reports
+router.get('/report/student', hostelJWT, studentReports)
 
 export default router;

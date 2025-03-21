@@ -2,11 +2,12 @@ import { Router } from 'express';
 const router = Router();
 import multer from 'multer'
 import { studentJWT } from '../middleware/auth.js';
-import { studentAuth, studentLogin } from '../controller/auth.js';
+import { studentAuth, studentForgotPassword, studentLogin } from '../controller/auth.js';
 import { createComplaint, listComplaint } from '../controller/complaint.js';
-import { listRoom } from '../controller/room.js';
+import { detailsRoom, listRoom } from '../controller/room.js';
 import { listMenu } from '../controller/menu.js';
 import { getMonthCheckins, getYearCheckins } from '../controller/checkin.js';
+import { studentChangePassword, updateStudentProfile } from '../controller/student.js';
 
 ///////////////// Multer /////////////////
 const storage = multer.diskStorage({});
@@ -24,9 +25,15 @@ const uploads = multer({ storage, fileFilter });
 
 // Authentication
 router.post('/login', studentLogin)
+router.post('/forgot-password', studentForgotPassword)
 router.post('/auth', studentJWT,studentAuth)
 
+// Student
+router.patch('/student/update-profile', uploads.single('image'), studentJWT, updateStudentProfile)
+router.patch('/student/change-password', studentJWT, studentChangePassword)
+
 // Room
+router.get('/room/details', studentJWT, detailsRoom)
 router.get('/room/list', studentJWT, listRoom)
 
 // Menu

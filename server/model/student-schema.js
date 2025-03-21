@@ -77,6 +77,10 @@ const studentSchema = new Schema({
         required: true,
         trim: true,
     },
+    image:{
+        type: Object,
+        trim: true,
+    },
     status:{
         type: String,
         required: true,

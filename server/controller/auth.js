@@ -33,6 +33,26 @@ export async function studentLogin(req, res) {
     }
 }
 
+export async function studentForgotPassword(req, res) {
+    try {
+        const { student_id, new_password } = req.body
+        const student = await Student.findOne({ student_id: student_id })
+        if (student) {
+            const password = await hash(new_password, 10)
+            await Student.updateOne({ _id: student._id }, {
+                $set: {
+                    password: password
+                }
+            })
+            res.json({ status: "success" })
+        } else {
+            res.json({ status: "failed", auth: false, type: "studentId", message: "Your student id is incorrect" })
+        }
+    } catch (error) {
+        res.json({ status: "failed", message: "Network error" })
+    }
+}
+
 export async function studentAuth(req, res) {
     try {
         const student_details = await Student.findById(req.studentId)

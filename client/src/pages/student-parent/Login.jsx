@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import NavbarComponent from "../../components/Navbar";
-import { HostelAuthApi, HostelLoginApi } from "../../apis/hostel";
 import { StudentAuthApi, StudentLoginApi } from "../../apis/student";
 import { ParentAuthApi, ParentLoginApi } from "../../apis/parent";
 
 const LoginPage = () => {
     // navigate
     const navigate = useNavigate()
+
+    // get current admin ( hostel or parent or student)
+    const admin = localStorage.getItem("admin")
 
     // states
     const [username, setUsername] = useState("")
@@ -136,6 +138,10 @@ const LoginPage = () => {
                         onChange={(e) => setPassword(e.target.value)}
                     />
                     {errorPassword && <p className="text-red-500 text-xs">{errorPassword}</p>}
+                    {
+                        admin === "student" &&
+                        <p onClick={() => navigate("/forgot-password")} className="underline text-xs font-semibold w-fit ml-auto text-blue-700 mt-1 hover:text-blue-900 cursor-pointer">Forgot password</p>
+                    }
                     <button
                         onClick={handleSubmit}
                         className="w-full border-4 border-[#1B263B] hover:bg-[#1B263B] text-black hover:text-white text-md font-bold py-2 px-4 rounded-md focus:outline-none focus:shadow-outline mt-8 mb-8"

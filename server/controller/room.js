@@ -44,7 +44,9 @@ export async function createRoom(req, res) {
 
 export async function detailsRoom(req, res) {
     try {
-        const room = await Room.findById(req.query._id)
+        console.log(req.query, "==request");
+        
+        const room = await Room.findOne({ hostel_id: req.query.hostel_id, room_no: req.query.room_no })
         res.json({ status: "success", room })
     } catch (error) {
         res.json({ status: "failed", message: "Network error" })

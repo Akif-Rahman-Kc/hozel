@@ -3,6 +3,7 @@ import Room from "../model/room-schema.js";
 import Parent from "../model/parent-schema.js";
 import Hostel from "../model/hostel-schema.js";
 import { compare, hash } from "bcrypt";
+import {v2 as cloudinary} from 'cloudinary';
 
 //////////////////////////////////////////////////////  STUDENT  //////////////////////////////////////////////////////
 
@@ -106,6 +107,81 @@ export async function updateStudent(req, res) {
     }
 }
 
+export async function updateStudentProfile(req, res) {
+    try {
+        console.log(req.body, '==body');
+        // validation
+        if (req.body.mobile_no.length != 10) {
+            res.json({ status: "failed", message: "Mobile number should be 10 digits" })
+            return "okay"
+        }
+        const student = await Student.findById(req.body._id)
+        if (student) {
+            let image = null
+            if (req.file) {
+                if (req.file.size < 10485760) {
+                    cloudinary.config({
+                        cloud_name: process.env.CLOUD_NAME,
+                        api_key: process.env.CLOUD_KEY,
+                        api_secret: process.env.CLOUD_SECRET
+                    });
+                    const result = await cloudinary.uploader.upload(req.file.path)
+                    if (student?.image?.public_id) {
+                        await cloudinary.api.delete_resources([student.image.public_id], { type: 'upload', resource_type: 'image' })
+                    }
+                    image = {
+                        public_id:result.public_id,
+                        path:result.secure_url
+                    }
+                } else {
+                    res.json({status:"failed", message:"FIle size is too heavy Pls select another File"})
+                }
+            }
+            await Student.updateOne({ _id: req.body._id }, {
+                $set: {
+                    name: req.body.name ? req.body.name : student.name,
+                    mobile_no: req.body.mobile_no ? req.body.mobile_no : student.mobile_no,
+                    address: req.body.address ? req.body.address : student.address,
+                    age: req.body.age ? req.body.age : student.age,
+                    gender: req.body.gender ? req.body.gender : student.gender,
+                    image: image ? image : student.image,
+                }
+            })
+            res.json({ status: "success" })
+        } else {
+            res.json({ status: "failed", message: "This student not exist" })
+        }
+    } catch (error) {
+        console.log(error);
+        res.json({ status: "failed", message: "Network error" })
+    }
+}
+
+export async function studentChangePassword(req, res) {
+    try {
+        const { old_password, new_password } = req.body
+        const student = await Student.findOne({ _id: req.studentId })
+        if (student) {
+            const isMatch = await compare(old_password, student.password)
+            if (isMatch) {
+                const password = await hash(new_password, 10)
+                await Student.updateOne({ _id: student._id }, {
+                    $set: {
+                        password: password
+                    }
+                })
+                res.json({ status: "success" })
+            } else {
+                res.json({ status: "failed", auth: false, type: "oldPassword", message: "Your old password is incorrect" })
+            }
+        } else {
+            res.json({ status: "failed", message: "Your not valid please logout and login" })
+        }
+    } catch (error) {
+        res.json({ status: "failed", message: "Network error" })
+    }
+}
+
 export async function updateStudentStatus(req, res) {
     try {
         const student = await Student.findById(req.body._id)
@@ -128,21 +204,50 @@ export async function deleteStudent(req, res) {
     try {
         const student = await Student.findById(req.query._id)
         if (student) {
-            await Student.deleteOne({ _id: req.query._id })
-            // remove parent also
-            await Parent.deleteOne({ username: student.student_id })
-            // room availability adding
-            const room = await Room.findOne({ hostel_id: req.hostelId, room_no: student?.room_no })
-            if (room) {
-                const occupants = room?.occupants?.filter(item => item.student_id !== student.student_id);
-                await Room.updateOne({ _id: room._id }, {
-                    $set: {
-                        availability: room.availability + 1,
-                        occupants: occupants
+            if (student?.image?.public_id) {
+                cloudinary.config({
+                    cloud_name: process.env.CLOUD_NAME, 
+                    api_key: process.env.CLOUD_KEY, 
+                    api_secret: process.env.CLOUD_SECRET
+                });
+                const result = await cloudinary.api.delete_resources([room.image.public_id], { type: 'upload', resource_type: 'image' })
+                const deleted = Object.keys(result.deleted)[0]
+                if (result.deleted[deleted] == 'deleted') {
+                    await Student.deleteOne({ _id: req.query._id })
+                    // remove parent also
+                    await Parent.deleteOne({ username: student.student_id })
+                    // room availability adding
+                    const room = await Room.findOne({ hostel_id: req.hostelId, room_no: student?.room_no })
+                    if (room) {
+                        const occupants = room?.occupants?.filter(item => item.student_id !== student.student_id);
+                        await Room.updateOne({ _id: room._id }, {
+                            $set: {
+                                availability: room.availability + 1,
+                                occupants: occupants
+                            }
+                        })
                     }
-                })
-            }
-            res.json({ status: "success" })
+                    res.json({ status: "success" })
+                }else{
+                    res.json({status:"failed", message:"File not deleted"})
+                }
+            } else {
+                await Student.deleteOne({ _id: req.query._id })
+                // remove parent also
+                await Parent.deleteOne({ username: student.student_id })
+                // room availability adding
+                const room = await Room.findOne({ hostel_id: req.hostelId, room_no: student?.room_no })
+                if (room) {
+                    const occupants = room?.occupants?.filter(item => item.student_id !== student.student_id);
+                    await Room.updateOne({ _id: room._id }, {
+                        $set: {
+                            availability: room.availability + 1,
+                            occupants: occupants
+                        }
+                    })
+                }
+                res.json({ status: "success" })
+            }  
         } else {
             res.json({ status: "failed", message: "This student not exist" })
         }

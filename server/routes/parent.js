@@ -3,7 +3,7 @@ const router = Router();
 import multer from 'multer'
 import { parentJWT } from '../middleware/auth.js';
 import { parentAuth, parentLogin } from '../controller/auth.js';
-import { listRoom } from '../controller/room.js';
+import { detailsRoom, listRoom } from '../controller/room.js';
 import { listMenu } from '../controller/menu.js';
 import { listComplaint } from '../controller/complaint.js';
 import { getMonthCheckins, getYearCheckins } from '../controller/checkin.js';
@@ -27,6 +27,7 @@ router.post('/login', parentLogin)
 router.post('/auth', parentJWT, parentAuth)
 
 // Room
+router.get('/room/details', parentJWT, detailsRoom)
 router.get('/room/list', parentJWT, listRoom)
 
 // Menu

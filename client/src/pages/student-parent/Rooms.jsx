@@ -91,7 +91,7 @@ const RoomsPage = () => {
                                         </h1>
                                         <h1 className="text-md font-bold mt-1">Vacancy - {item.availability}</h1>
                                         <h1 className="text-md font-bold mt-1">
-                                            Facilities - <span className="font-semibold">{item.facilities}</span>
+                                            Facilities - <span className="font-semibold">{item.facilities.join(", ")}</span>
                                         </h1>
                                         <h1 className="text-xl font-extrabold mt-1">₹{item.price}</h1>
                                     </div>

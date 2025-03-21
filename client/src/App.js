@@ -18,6 +18,10 @@ import HostelLandingPage from "./pages/hostel/Landing";
 import HostelRegisterPage from "./pages/hostel/Register";
 import HostelForgotPasswordPage from "./pages/hostel/ForgotPassword";
 import AttendancePage from "./pages/student-parent/Attendance";
+import MyRoomPage from "./pages/student-parent/MyRoom";
+import ProfilePage from "./pages/student-parent/Profile";
+import ForgotPasswordPage from "./pages/student-parent/ForgotPassword";
+import ChangePasswordPage from "./pages/student-parent/ChangePassword";
 
 function App() {
   return (
@@ -38,11 +42,15 @@ function App() {
         <Route path="/hostel/checkins" element={<HostelCheckinPage />} />
         {/* student-parent */}
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/home" element={<HomePage />} />
         <Route path="/rooms" element={<RoomsPage />} />
         <Route path="/menus" element={<MenusPage />} />
         <Route path="/complaints" element={<ComplaintsPage />} />
         <Route path="/attendance" element={<AttendancePage />} />
+        <Route path="/my-room" element={<MyRoomPage />} />
+        <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/change-password" element={<ChangePasswordPage />} />
       </Routes>
     </BrowserRouter>
   );
