@@ -210,7 +210,7 @@ export async function deleteStudent(req, res) {
                     api_key: process.env.CLOUD_KEY, 
                     api_secret: process.env.CLOUD_SECRET
                 });
-                const result = await cloudinary.api.delete_resources([room.image.public_id], { type: 'upload', resource_type: 'image' })
+                const result = await cloudinary.api.delete_resources([student.image.public_id], { type: 'upload', resource_type: 'image' })
                 const deleted = Object.keys(result.deleted)[0]
                 if (result.deleted[deleted] == 'deleted') {
                     await Student.deleteOne({ _id: req.query._id })
